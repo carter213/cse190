@@ -29,4 +29,24 @@
     <servlet-name>login</servlet-name>
     <url-pattern>/login</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>updateUser</display-name>
+    <servlet-name>updateUser</servlet-name>
+    <servlet-class>com.cse190.user.updateUser</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>updateUser</servlet-name>
+    <url-pattern>/updateUser</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>findRestaurants</display-name>
+    <servlet-name>findRestaurants</servlet-name>
+    <servlet-class>com.cse190.restaurant.findRestaurants</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>findRestaurants</servlet-name>
+    <url-pattern>/findRestaurants</url-pattern>
+  </servlet-mapping>
 </web-app>
