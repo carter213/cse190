@@ -97,10 +97,12 @@ public class createRestaurant extends HttpServlet {
 		String phone = request.getParameter("phone");
 		String website = request.getParameter("website");
 
+		//Can be done on android
+		//So the android sent all check data to the servlet
 		GeoLocation loc = getCoordinate(address + city + state);
 		double latitude = loc.getLatitude();
 		double longitude = loc.getLongitude();
-
+		//*******
 	
 		Connection conn = null;
 		Statement stmt = null;
@@ -115,6 +117,7 @@ public class createRestaurant extends HttpServlet {
 			sql = "SELECT * FROM restaurant WHERE name ='" + name + "' AND phone ='" + phone;
 			
 			ResultSet rs = stmt.executeQuery(sql);
+			rs.next();
 			if(rs.getRow() == 0)
 			{
 				sql = "INSERT INTO restaurant (name, address, city, state, zip, latitude, longitude, phone, website) VALUES ('";

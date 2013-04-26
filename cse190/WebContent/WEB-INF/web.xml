@@ -59,4 +59,34 @@
     <servlet-name>createRestaurant</servlet-name>
     <url-pattern>/createRestaurant</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>createFood</display-name>
+    <servlet-name>createFood</servlet-name>
+    <servlet-class>com.cse190.food.createFood</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>createFood</servlet-name>
+    <url-pattern>/createFood</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>findFood</display-name>
+    <servlet-name>findFood</servlet-name>
+    <servlet-class>com.cse190.food.findFood</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>findFood</servlet-name>
+    <url-pattern>/findFood</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>createVote</display-name>
+    <servlet-name>createVote</servlet-name>
+    <servlet-class>com.cse190.vote.createVote</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>createVote</servlet-name>
+    <url-pattern>/createVote</url-pattern>
+  </servlet-mapping>
 </web-app>
