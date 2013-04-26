@@ -49,4 +49,14 @@
     <servlet-name>findRestaurants</servlet-name>
     <url-pattern>/findRestaurants</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>createRestaurant</display-name>
+    <servlet-name>createRestaurant</servlet-name>
+    <servlet-class>com.cse190.restaurant.createRestaurant</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>createRestaurant</servlet-name>
+    <url-pattern>/createRestaurant</url-pattern>
+  </servlet-mapping>
 </web-app>

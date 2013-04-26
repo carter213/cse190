@@ -13,6 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+
 /**
  * Servlet implementation class findRestaurants
  */
@@ -29,13 +33,23 @@ public class findRestaurants extends HttpServlet {
     public findRestaurants() {
         super();
         // TODO Auto-generated constructor stub
-    }
+    }  
+    
+    public float calcDistance(double latA, double longA, double latB, double longB) {
 
+        double theDistance = (Math.sin(Math.toRadians(latA)) *
+                Math.sin(Math.toRadians(latB)) +
+                Math.cos(Math.toRadians(latA)) *
+                Math.cos(Math.toRadians(latB)) *
+                Math.cos(Math.toRadians(longA - longB)));
+
+        return new Double((Math.toDegrees(Math.acos(theDistance))) * 69.09).floatValue();
+    }
+    
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		PrintWriter out = response.getWriter();
 		
 		String key = request.getParameter("key");
@@ -58,10 +72,15 @@ public class findRestaurants extends HttpServlet {
 			sql = sql + " city = '" + incity + "' AND";
 		}
 		
-		/*if (inlatitude != null)
+		if (inlatitude != null)
 		{
-			sql = sql + " latitude >= '" + inlatitude + "' AND latitude <= '" + inlatitude + "' AND";
-		}*/
+			sql = sql + " latitude >= " + (Double.parseDouble(inlatitude) - 0.05) + " AND latitude <= " + (Double.parseDouble(inlatitude) + 0.05) + " AND";
+		}
+		
+		if (inlongitude != null)
+		{
+			sql = sql + " longitude >= " + (Double.parseDouble(inlongitude) - 0.05) + " AND longitude <= " + (Double.parseDouble(inlongitude) + 0.05) + " AND";
+		}
 		
 		Connection conn = null;
 		Statement stmt = null;
@@ -76,9 +95,9 @@ public class findRestaurants extends HttpServlet {
 			ResultSet rs = stmt.executeQuery(sql);
 				
 			
-			//Gson gson = new Gson();
+
+			JsonArray jsarr = new JsonArray();
 			
-			int i = 0;
 			while (rs.next()) {
 				int id = rs.getInt("rest_id");
 	            String name = rs.getString("name");
@@ -89,10 +108,27 @@ public class findRestaurants extends HttpServlet {
 	            String website = rs.getString("website");
 	            String city = rs.getString("city");
 	            String state = rs.getString("state");
-	            i++;
-	            out.println(id + " " + name + " " + address + " " + phone + " " + city + " " + latitude  + " " + longitude + " " + state +  " " + website);
+
+	            float distance = calcDistance(Double.parseDouble(inlatitude), Double.parseDouble(inlongitude), latitude, longitude);
+	            if (distance <= 1)
+	            {
+	            	JsonObject obj = new JsonObject();
+	            	obj.addProperty("id", id);
+	            	obj.addProperty("name", name);
+	            	obj.addProperty("address", address);
+	            	obj.addProperty("city", city);
+	            	obj.addProperty("state", state);
+	            	obj.addProperty("latitude", latitude);
+	            	obj.addProperty("longitude", longitude);
+	            	obj.addProperty("phone", phone);
+	            	obj.addProperty("website", website);
+	            	obj.addProperty("distance", distance);
+	            	
+	            	jsarr.add(obj);	            	
+	            }
 	        }
-			out.println(i);
+
+			out.println(jsarr.toString());
 
 			//STEP 6: Clean-up environment
 			stmt.close();

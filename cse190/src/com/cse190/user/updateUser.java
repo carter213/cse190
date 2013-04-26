@@ -58,7 +58,6 @@ public class updateUser extends HttpServlet {
 			ResultSet rs = stmt.executeQuery(sql);
 				
 			rs.next();
-				//out.println(rs.getRow());		   
 			if(rs.getRow() == 0)
 			{
 				sql = "UPDATE user SET password = '" + password + "', email = '" + email

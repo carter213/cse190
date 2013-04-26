@@ -63,7 +63,6 @@ public class createUser extends HttpServlet {
 			ResultSet rs = stmt.executeQuery(sql);
 				
 			rs.next();
-				//out.println(rs.getRow());		   
 			if(rs.getRow() == 0)
 			{
 				sql = "INSERT INTO user(username, password, email, first_name, last_name) VALUES('"

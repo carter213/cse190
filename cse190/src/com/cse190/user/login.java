@@ -54,7 +54,6 @@ public class login extends HttpServlet {
 			ResultSet rs = stmt.executeQuery(sql);
 				
 			rs.next();
-				//out.println(rs.getRow());		   
 			if(rs.getRow() == 1)
 			{
 				out.println("True");
