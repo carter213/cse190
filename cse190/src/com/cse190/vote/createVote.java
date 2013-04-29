@@ -39,6 +39,7 @@ public class createVote extends HttpServlet {
 		
 		String food_id = request.getParameter("food_id");
 		String user_id = request.getParameter("user_id");
+		String rest_id = request.getParameter("rest_id");
 		String comment = request.getParameter("comment");
 		
 		if( food_id == null || user_id == null)
@@ -57,12 +58,15 @@ public class createVote extends HttpServlet {
 			stmt = conn.createStatement();
 			
 			String sql;
-			sql = "SELECT vote_id FROM vote WHERE user_id ='" + user_id + "' AND food_id ='" + food_id;
+			//If no results are returned, then the user has no vote in this restaurant
+			sql = "SELECT vote_id, food_id FROM vote WHERE user_id ='" + user_id + "' AND food_id in " +
+						"(SELECT food_id from food WHERE rest_id ='" + rest_id + ")";
 			
 			ResultSet rs = stmt.executeQuery(sql);
 			rs.next();
 			if(rs.getRow() == 0)
 			{
+				//If no vote exists from this user, add it with comment
 				sql = "INSERT INTO vote (user_id, food_id, comment) VALUES ('";
 				sql = sql + user_id + "','" + food_id + "','" + comment + "')";
 				stmt.executeUpdate(sql);
@@ -70,12 +74,21 @@ public class createVote extends HttpServlet {
 			}
 			else
 			{
-				//Update
-				sql = "UPDATE vote SET comment ='" + comment + "' WHERE vote_id ="+ rs.getInt("vote_id");
+				//Update the food_id and comment if their vote is going to be overwritten
+				sql = "UPDATE vote SET comment ='" + comment + "', food_id='" + food_id + 
+						"' WHERE vote_id ="+ rs.getInt("vote_id");
+				 int prev_food_id = rs.getInt("food_id");
+				stmt.executeUpdate(sql);
+				
+				//Decrement prev food vote 
+				sql = "UPDATE food SET vote=(vote-1) WHERE food_id='" + prev_food_id + "'";
 				stmt.executeUpdate(sql);
 				out.println("Success");
 			}
 			
+			//Increment new food vote
+			sql = "UPDATE food SET vote=(vote+1) WHERE food_id='" + food_id + "'";
+			stmt.executeUpdate(sql);			
 
 			//STEP 6: Clean-up environment
 			stmt.close();
@@ -107,6 +120,7 @@ public class createVote extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }
