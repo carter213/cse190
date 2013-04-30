@@ -5,7 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="search">Search</string>
-    <string name="search_hint">Search&#8320;</string>
+    <string name="search_hint">Search...</string>
     <string name="search_nearby">Find Nearby</string>
     <string name="title_activity_results">Results</string>
     <string name="login">Login</string>

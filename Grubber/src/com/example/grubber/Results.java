@@ -1,8 +1,8 @@
 package com.example.grubber;
 
-import com.example.grubberlayout.R;
-import com.example.grubberlayout.R.layout;
-import com.example.grubberlayout.R.menu;
+import com.example.grubber.R;
+import com.example.grubber.R.layout;
+import com.example.grubber.R.menu;
 
 import android.os.Bundle;
 import android.app.Activity;

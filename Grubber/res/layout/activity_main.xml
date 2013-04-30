@@ -25,7 +25,8 @@
         android:layout_height="wrap_content"
 		android:text="@string/search_nearby"
     	android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
+        android:layout_below="@+id/main_search"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:onClick="doSearchNearby" />
    

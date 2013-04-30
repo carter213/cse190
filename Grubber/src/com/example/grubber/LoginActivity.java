@@ -1,6 +1,6 @@
 package com.example.grubber;
 
-import com.example.grubberlayout.R;
+import com.example.grubber.R;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
