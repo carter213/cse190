@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -38,36 +39,45 @@ public class createFood extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
-		
+		int rest_id;
 		String name = request.getParameter("name");
 		String description = request.getParameter("description");
-		String rest_id = request.getParameter("rest_id");
+		String rest_id_result = request.getParameter("rest_id");
 		
-		if( name == null || rest_id == null)
+		if( name == null || rest_id_result == null)
 		{
 			out.println("Error, parameter missing");
 			return;
 		}
+		else {
+			rest_id = Integer.parseInt(rest_id_result);
+		}
 	
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 		try{
 			//STEP 2: Register JDBC driver
 			   
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
-			stmt = conn.createStatement();
 			
-			String sql;
-			sql = "SELECT food_id FROM food WHERE name ='" + name + "' AND rest_id ='" + rest_id;
+			String sql = "SELECT food_id FROM food WHERE name = ? AND rest_id = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, name);
+			stmt.setInt(2, rest_id);
 			
-			ResultSet rs = stmt.executeQuery(sql);
+			ResultSet rs = stmt.executeQuery();
 			rs.next();
 			if(rs.getRow() == 0)
 			{
-				sql = "INSERT INTO food (rest_id, name, description) VALUES ('";
+				sql = "INSERT INTO food (rest_id, name, description) VALUES (?, ?, ?)";
 				sql = sql + rest_id + "','" + name + "','" + description + "')";
-				stmt.executeUpdate(sql);
+				stmt = conn.prepareStatement(sql);
+				stmt.setInt(1, rest_id);
+				stmt.setString(2, name);
+				stmt.setString(3, description);
+				
+				stmt.executeUpdate();
 				out.println("Success");
 			}
 			else
@@ -106,6 +116,7 @@ public class createFood extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }

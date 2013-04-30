@@ -4,14 +4,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 
 /**
  * Servlet implementation class updateUser
@@ -45,25 +46,29 @@ public class updateUser extends HttpServlet {
 		String last_name = request.getParameter("last_name");
 
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 		try{
 			//STEP 2: Register JDBC driver
 			   
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
-			stmt = conn.createStatement();
-			String sql;
 			
-			sql = "SELECT user_id FROM user WHERE email ='"+email+"'";
-			ResultSet rs = stmt.executeQuery(sql);
+			String sql = "SELECT user_id FROM user WHERE email = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, email);
+			ResultSet rs = stmt.executeQuery();
 				
 			rs.next();
 			if(rs.getRow() == 0)
 			{
-				sql = "UPDATE user SET password = '" + password + "', email = '" + email
-						+ "', first_name = '" + first_name + "', last_name = '" + last_name 
-						+ "' WHERE username = '" + username + "'";
-				stmt.executeUpdate(sql);
+				sql = "UPDATE user SET password = ?, email = ?, first_name = ?, last_name = ? WHERE username = ?";
+				stmt = conn.prepareStatement(sql);
+				stmt.setString(1, password);
+				stmt.setString(2,  email);
+				stmt.setString(3, first_name);
+				stmt.setString(4, last_name);
+				stmt.setString(5, username);
+				stmt.executeUpdate();
 				out.println("Success");
 			}
 			else
@@ -101,6 +106,7 @@ public class updateUser extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -58,44 +59,70 @@ public class findRestaurants extends HttpServlet {
 		String inzip = request.getParameter("zip");
 		String incity = request.getParameter("city");
 		
-
-		String sql;
-		sql = "SELECT * FROM restaurant WHERE";
+		String sql = "SELECT * FROM restaurant WHERE";
 		//adding zip on the query
 		if (inzip != null)
 		{
-			sql = sql + " zip = '" + inzip + "' AND";
+			sql += " zip = ? AND";
 		}
 		
 		if (incity != null)
 		{
-			sql = sql + " city = '" + incity + "' AND";
+			sql += " city = ? AND";
 		}
 		
 		if (inlatitude != null)
 		{
-			sql = sql + " latitude >= " + (Double.parseDouble(inlatitude) - 0.05) + " AND latitude <= " + (Double.parseDouble(inlatitude) + 0.05) + " AND";
+			sql += " latitude >= ? AND latitude <= ? AND";
 		}
 		
 		if (inlongitude != null)
 		{
-			sql = sql + " longitude >= " + (Double.parseDouble(inlongitude) - 0.05) + " AND longitude <= " + (Double.parseDouble(inlongitude) + 0.05) + " AND";
+			sql += " longitude >= ? AND longitude <= ? AND";
 		}
 		
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 		try{
 			//STEP 2: Register JDBC driver
 			   
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
-			stmt = conn.createStatement();
 			
-			sql = sql + " name LIKE '%" + key + "%'";
-			ResultSet rs = stmt.executeQuery(sql);
+			sql += " name LIKE '%?%'";
+			stmt = conn.prepareStatement(sql);
+			int index = 1;
+			if (inzip != null)
+			{
+				stmt.setString(index, inzip);
+				index++;
+			}
+			
+			if (incity != null)
+			{
+				stmt.setString(index, incity);
+				index++;
+			}
+			
+			if (inlatitude != null)
+			{
+				stmt.setDouble(index, (Double.parseDouble(inlatitude) - 0.05));
+				index++;
+				stmt.setDouble(index, (Double.parseDouble(inlatitude) + 0.05));
+				index++;
+			}
+			
+			if (inlongitude != null)
+			{
+				stmt.setDouble(index, (Double.parseDouble(inlongitude) - 0.05));
+				index++;
+				stmt.setDouble(index, (Double.parseDouble(inlongitude) + 0.05));
+				index++;
+			}			
+			stmt.setString(index, key);
+			ResultSet rs = stmt.executeQuery();
 				
 			
-
 			JsonArray jsarr = new JsonArray();
 			
 			while (rs.next()) {
@@ -160,6 +187,7 @@ public class findRestaurants extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }
