@@ -71,7 +71,6 @@ public class createFood extends HttpServlet {
 			if(rs.getRow() == 0)
 			{
 				sql = "INSERT INTO food (rest_id, name, description) VALUES (?, ?, ?)";
-				sql = sql + rest_id + "','" + name + "','" + description + "')";
 				stmt = conn.prepareStatement(sql);
 				stmt.setInt(1, rest_id);
 				stmt.setString(2, name);
