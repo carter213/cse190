@@ -50,24 +50,31 @@ public class createUser extends HttpServlet {
 		String last_name = request.getParameter("last_name");
 
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 		try{
 			//STEP 2: Register JDBC driver
 			   
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
-			stmt = conn.createStatement();
-			String sql;
 			
-			sql = "SELECT username FROM user WHERE username='"+username+"' OR email ='"+email+"'";
-			ResultSet rs = stmt.executeQuery(sql);
+			String sql = "SELECT username FROM user WHERE username = ? OR email = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, username);
+			stmt.setString(2, email);
+			
+			ResultSet rs = stmt.executeQuery();
 				
 			rs.next();
 			if(rs.getRow() == 0)
 			{
-				sql = "INSERT INTO user(username, password, email, first_name, last_name) VALUES('"
-						+username+ "','" +password+ "','" +email+"','" +first_name+ "','"+last_name+ "')";
-				stmt.executeUpdate(sql);
+				sql = "INSERT INTO user(username, password, email, first_name, last_name) VALUES(?, ?, ?, ?, ?)";
+				stmt = conn.prepareStatement(sql);
+				stmt.setString(1, username);
+				stmt.setString(2, password);
+				stmt.setString(3, email);
+				stmt.setString(4, first_name);
+				stmt.setString(5, last_name);
+				stmt.executeUpdate();
 				out.println("Success");
 			}
 			else

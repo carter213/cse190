@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -41,17 +42,18 @@ public class login extends HttpServlet {
 		String password = request.getParameter("password");
 
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 		try{
 			//STEP 2: Register JDBC driver
 			   
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
-			stmt = conn.createStatement();
-			String sql;
-			
-			sql = "SELECT username FROM user WHERE username='"+username+"' AND password ='"+password+"'";
-			ResultSet rs = stmt.executeQuery(sql);
+						
+			String sql = "SELECT username FROM user WHERE username= ? AND password = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, username);
+			stmt.setString(2, password);
+			ResultSet rs = stmt.executeQuery();
 				
 			rs.next();
 			if(rs.getRow() == 1)

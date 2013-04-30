@@ -10,6 +10,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -105,24 +106,35 @@ public class createRestaurant extends HttpServlet {
 		//*******
 	
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 		try{
 			//STEP 2: Register JDBC driver
 			   
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
-			stmt = conn.createStatement();
 			
-			String sql;
-			sql = "SELECT * FROM restaurant WHERE name ='" + name + "' AND phone ='" + phone;
+			String sql = "SELECT * FROM restaurant WHERE name = ? AND phone = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, name);
+			stmt.setString(2, phone);
 			
-			ResultSet rs = stmt.executeQuery(sql);
+			ResultSet rs = stmt.executeQuery();
 			rs.next();
 			if(rs.getRow() == 0)
 			{
-				sql = "INSERT INTO restaurant (name, address, city, state, zip, latitude, longitude, phone, website) VALUES ('";
-				sql = sql + name + "','" + address + "','" + city + "','" + state + "','" + zip + "','" + latitude + "','" + longitude + "','" + phone + "','" + website +  " ')";
-				stmt.executeUpdate(sql);
+				sql = "INSERT INTO restaurant (name, address, city, state, zip, latitude, longitude, phone, website) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				stmt = conn.prepareStatement(sql);
+				stmt.setString(1, name);
+				stmt.setString(2, address);
+				stmt.setString(3, city);
+				stmt.setString(4, state);
+				stmt.setString(5, zip);
+				stmt.setDouble(6, latitude);
+				stmt.setDouble(7, longitude);
+				stmt.setString(8, phone);
+				stmt.setString(9, website);
+
+				stmt.executeUpdate();
 				out.println("Success");
 			}
 			else

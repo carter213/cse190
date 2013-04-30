@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -39,37 +40,40 @@ public class findFood extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
-		
+		int rest_id;
 		String alg = request.getParameter("alg");
-		String rest_id = request.getParameter("rest_id");
+		String rest_id_result = request.getParameter("rest_id");
 
 		
-		if (rest_id == null)
+		if (rest_id_result == null)
 		{
 			out.println("Error, parameter not complete");
 			return;
 		}
+		else {
+			rest_id = Integer.parseInt(rest_id_result);
+		}
 		
 		
 		String sql;
-		sql = "SELECT * FROM food WHERE rest_id =" + rest_id;
+		sql = "SELECT * FROM food WHERE rest_id = ?";
 		
 		//show best 3 food in the restaurant
 		if (alg != null)
 		{
-			sql = sql + " ORDER BY vote DESC LIMIT 0, 3";
+			sql += " ORDER BY vote DESC LIMIT 0, 3";
 		}	
 		
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 		try{
 			//STEP 2: Register JDBC driver
 			   
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
-			stmt = conn.createStatement();
-
-			ResultSet rs = stmt.executeQuery(sql);
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, rest_id);
+			ResultSet rs = stmt.executeQuery();
 				
 			JsonArray jsarr = new JsonArray();
 			

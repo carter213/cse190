@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -49,46 +50,56 @@ public class createVote extends HttpServlet {
 		}
 	
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 		try{
 			//STEP 2: Register JDBC driver
 			   
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
-			stmt = conn.createStatement();
 			
-			String sql;
 			//If no results are returned, then the user has no vote in this restaurant
-			sql = "SELECT vote_id, food_id FROM vote WHERE user_id ='" + user_id + "' AND food_id in " +
-						"(SELECT food_id from food WHERE rest_id ='" + rest_id + ")";
-			
-			ResultSet rs = stmt.executeQuery(sql);
+			String sql = "SELECT vote_id, food_id FROM vote WHERE user_id = ? AND food_id in " +
+					"(SELECT food_id from food WHERE rest_id = ?)";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, user_id);
+			stmt.setString(2, rest_id);
+			ResultSet rs = stmt.executeQuery();
 			rs.next();
 			if(rs.getRow() == 0)
 			{
 				//If no vote exists from this user, add it with comment
-				sql = "INSERT INTO vote (user_id, food_id, comment) VALUES ('";
-				sql = sql + user_id + "','" + food_id + "','" + comment + "')";
-				stmt.executeUpdate(sql);
+				sql = "INSERT INTO vote (user_id, food_id, comment) VALUES (?, ?, ?)";
+				stmt = conn.prepareStatement(sql);
+				stmt.setString(1, user_id);
+				stmt.setString(2, food_id);
+				stmt.setString(3, comment);
+				stmt.executeUpdate();
 				out.println("Success");
 			}
 			else
 			{
 				//Update the food_id and comment if their vote is going to be overwritten
-				sql = "UPDATE vote SET comment ='" + comment + "', food_id='" + food_id + 
-						"' WHERE vote_id ="+ rs.getInt("vote_id");
-				 int prev_food_id = rs.getInt("food_id");
-				stmt.executeUpdate(sql);
+				sql = "UPDATE vote SET comment = ?, food_id = ? WHERE vote_id = ?";
+				int prev_food_id = rs.getInt("food_id");
+				stmt = conn.prepareStatement(sql);
+				stmt.setString(1, comment);
+				stmt.setString(2, food_id);
+				stmt.setString(3, food_id);
+				stmt.executeUpdate();
 				
 				//Decrement prev food vote 
-				sql = "UPDATE food SET vote=(vote-1) WHERE food_id='" + prev_food_id + "'";
-				stmt.executeUpdate(sql);
+				sql = "UPDATE food SET vote=(vote-1) WHERE food_id = ?";
+				stmt = conn.prepareStatement(sql);
+				stmt.setInt(1, prev_food_id);
+				stmt.executeUpdate();
 				out.println("Success");
 			}
 			
 			//Increment new food vote
-			sql = "UPDATE food SET vote=(vote+1) WHERE food_id='" + food_id + "'";
-			stmt.executeUpdate(sql);			
+			sql = "UPDATE food SET vote=(vote+1) WHERE food_id = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, food_id);
+			stmt.executeUpdate();			
 
 			//STEP 6: Clean-up environment
 			stmt.close();
