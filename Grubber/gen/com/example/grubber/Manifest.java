@@ -9,6 +9,6 @@ package com.example.grubber;
 
 public final class Manifest {
     public static final class permission {
-        public static final String MAPS_RECEIVE="com.example.Grubber.permission.MAPS_RECEIVE";
+        public static final String MAPS_RECEIVE="com.example.grubber.permission.MAPS_RECEIVE";
     }
 }
