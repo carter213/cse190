@@ -41,7 +41,6 @@ public class MainActivity extends Activity {
     
     public void doSignup(View view) {
        	Intent intent = new Intent(this, signupActivity.class);
-       	Log.d("bug", "sign up in main!!");
     	startActivity(intent);    
     }
     
