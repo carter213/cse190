@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="signup_username_TV">User Name</string>
+    <string name="signup_pwd_TV">Password</string>
+    <string name="signup_pwd_reenter_TV">Re-enter Password</string>
+    <string name="signup_confirm_btn">Confirm</string>
+    <string name="title_activity_signup">sign Up</string>
+    
+</resources>

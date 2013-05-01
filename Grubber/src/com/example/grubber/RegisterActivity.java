@@ -10,6 +10,9 @@ import android.view.View;
 
 public class RegisterActivity extends Activity {
 
+	
+
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

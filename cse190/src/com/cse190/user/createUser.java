@@ -42,13 +42,21 @@ public class createUser extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
-		
+				
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String email = request.getParameter("email");
 		String first_name = request.getParameter("first_name");
 		String last_name = request.getParameter("last_name");
-
+		
+		// Get the hash of their password and store this instead
+		String hash = "";
+		try {
+			hash = Password.getSaltedHash(password);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try{
@@ -70,7 +78,7 @@ public class createUser extends HttpServlet {
 				sql = "INSERT INTO user(username, password, email, first_name, last_name) VALUES(?, ?, ?, ?, ?)";
 				stmt = conn.prepareStatement(sql);
 				stmt.setString(1, username);
-				stmt.setString(2, password);
+				stmt.setString(2, hash);
 				stmt.setString(3, email);
 				stmt.setString(4, first_name);
 				stmt.setString(5, last_name);
@@ -115,5 +123,4 @@ public class createUser extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
 }

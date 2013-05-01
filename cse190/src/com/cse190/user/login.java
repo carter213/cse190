@@ -37,8 +37,9 @@ public class login extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
-		
+				
 		String username = request.getParameter("username");
+		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 
 		Connection conn = null;
@@ -48,21 +49,38 @@ public class login extends HttpServlet {
 			   
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
-						
-			String sql = "SELECT username FROM user WHERE username= ? AND password = ?";
-			stmt = conn.prepareStatement(sql);
-			stmt.setString(1, username);
-			stmt.setString(2, password);
+			
+			// Allow either email or username to be submitted
+			String sql;
+			if (email!=null) {  
+				sql = "SELECT password FROM user WHERE email = ?";
+				stmt = conn.prepareStatement(sql);
+				stmt.setString(1, email);
+			}
+			else if (username!=null) {
+				sql = "SELECT password FROM user WHERE username = ?";
+				stmt = conn.prepareStatement(sql);
+				stmt.setString(1, username);
+			}
+			else {
+				out.println("False");
+				return;
+			}
+			
 			ResultSet rs = stmt.executeQuery();
 				
-			rs.next();
-			if(rs.getRow() == 1)
+			// Compare the password stored in the db to their entered password
+			if(rs.next())
 			{
-				out.println("True");
+				String stored = rs.getString("password");
+				if (Password.check(password, stored))
+					out.println("True");
+				else
+					out.println("False");
 			}
 			else
 			{
-				out.println("False");
+				out.println("User does not exist");	
 			}
 
 			//STEP 6: Clean-up environment
