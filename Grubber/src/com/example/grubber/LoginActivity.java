@@ -1,11 +1,12 @@
 package com.example.grubber;
 
-import com.example.grubberlayout.R;
+import com.example.grubber.R;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,12 +17,20 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.content.Intent;
+
 
 /**
  * Activity which displays a login screen to the user, offering registration as
  * well.
  */
 public class LoginActivity extends Activity {
+    public void goToRegister(View view) {
+    	Intent intent = new Intent(this, RegisterActivity.class);
+    	startActivity(intent);	
+    }
+    
+    
 	/**
 	 * A dummy authentication store containing known user names and passwords.
 	 * TODO: remove after connecting to a real authentication system.
@@ -243,5 +252,7 @@ public class LoginActivity extends Activity {
 			mAuthTask = null;
 			showProgress(false);
 		}
+		
+
 	}
 }

@@ -25,7 +25,8 @@
         android:layout_height="wrap_content"
 		android:text="@string/search_nearby"
     	android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
+        android:layout_below="@+id/main_search"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:onClick="doSearchNearby" />
    
@@ -38,6 +39,17 @@
         android:layout_below="@+id/nearby"
         android:layout_marginTop="50dp"
         android:gravity="center"
-        android:onClick="doLogin" />   
+        android:onClick="doLogin" />
+
+     <Button
+         android:id="@+id/main_signUp_btn"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/login"
+         android:layout_centerHorizontal="true"
+         android:layout_marginTop="83dp"
+         android:gravity="center"
+         android:onClick="doSignup"
+         android:text="Sign Up" />
     
 </RelativeLayout>

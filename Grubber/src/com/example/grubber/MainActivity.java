@@ -1,10 +1,11 @@
 package com.example.grubber;
 
-import com.example.grubberlayout.R;
+import com.example.grubber.R;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
@@ -14,7 +15,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        onSearchRequested();
     }
 
 
@@ -32,16 +32,18 @@ public class MainActivity extends Activity {
     
     public void doLogin(View view) {
     	Intent intent = new Intent(this, LoginActivity.class);
-    	startActivity(intent);
-    	
-    }
-    
-    public void doSearch(View view) {
-    	Intent intent = new Intent(this, Results.class);
-    	startActivity(intent);     	
+    	startActivity(intent);	
     }
     
     public void openSearchDialog(View view) {
     	onSearchRequested();
     }
+    
+    public void doSignup(View view) {
+       	Intent intent = new Intent(this, signupActivity.class);
+    	startActivity(intent);    
+    }
+    
+    
+
 }
