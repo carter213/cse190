@@ -1,5 +1,10 @@
 package com.example.grubber;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+
 import com.example.grubber.R;
 
 import android.animation.Animator;
@@ -221,16 +226,11 @@ public class LoginActivity extends Activity {
 				return false;
 			}
 
-			for (String credential : DUMMY_CREDENTIALS) {
-				String[] pieces = credential.split(":");
-				if (pieces[0].equals(mEmail)) {
-					// Account exists, return true if the password matches.
-					return pieces[1].equals(mPassword);
-				}
-			}
+			if(checkLogin(mEmail,mPassword))
+				return true;
 
 			// TODO: register the new account here.
-			return true;
+			return false;
 		}
 
 		@Override
@@ -246,6 +246,32 @@ public class LoginActivity extends Activity {
 				mPasswordView.requestFocus();
 			}
 		}
+		
+		protected boolean checkLogin(String email, String password){
+			URL url;
+			URLConnection uc;
+			BufferedReader data;
+			try {
+				url = new URL("http://cse190.myftp.org:8080/cse190/login?email=" + email + "&password=" + password);
+				uc = url.openConnection();
+				data = new BufferedReader(new InputStreamReader(uc.getInputStream()));
+				String inputLine = data.readLine();
+				String tr = "NULL";
+				if(!inputLine.equals(tr))
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				//No Connection
+				return false;
+			}
+		}
+
 
 		@Override
 		protected void onCancelled() {
