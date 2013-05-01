@@ -24,25 +24,34 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_forgot_password=0x7f09000b;
-        public static final int action_settings=0x7f09000c;
+        public static final int action_forgot_password=0x7f090013;
+        public static final int action_settings=0x7f090014;
         public static final int email=0x7f090003;
         public static final int login=0x7f090005;
         public static final int login_form=0x7f090002;
         public static final int login_status=0x7f090000;
         public static final int login_status_message=0x7f090001;
         public static final int main_search=0x7f090008;
-        public static final int map=0x7f09000a;
+        public static final int main_signUp_btn=0x7f09000a;
+        public static final int map=0x7f09000b;
         public static final int nearby=0x7f090009;
         public static final int password=0x7f090004;
         public static final int register_button=0x7f090007;
         public static final int sign_in_button=0x7f090006;
+        public static final int signup_confirm_btn=0x7f090012;
+        public static final int signup_pwd_ET=0x7f09000f;
+        public static final int signup_pwd_TV=0x7f09000e;
+        public static final int signup_pwd_reenter_ET=0x7f090011;
+        public static final int signup_pwd_reenter_TV=0x7f090010;
+        public static final int signup_username_ET=0x7f09000d;
+        public static final int signup_username_TV=0x7f09000c;
     }
     public static final class layout {
         public static final int activity_login=0x7f030000;
         public static final int activity_main=0x7f030001;
         public static final int activity_register=0x7f030002;
         public static final int activity_results=0x7f030003;
+        public static final int activity_signup=0x7f030004;
     }
     public static final class menu {
         public static final int login=0x7f080000;
@@ -72,9 +81,14 @@ public final class R {
         public static final int search=0x7f060003;
         public static final int search_hint=0x7f060004;
         public static final int search_nearby=0x7f060005;
+        public static final int signup_confirm_btn=0x7f060019;
+        public static final int signup_pwd_TV=0x7f060017;
+        public static final int signup_pwd_reenter_TV=0x7f060018;
+        public static final int signup_username_TV=0x7f060016;
         public static final int title_activity_login=0x7f060008;
         public static final int title_activity_register=0x7f060013;
         public static final int title_activity_results=0x7f060006;
+        public static final int title_activity_signup=0x7f06001a;
     }
     public static final class style {
         /** 

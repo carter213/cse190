@@ -5,6 +5,7 @@ import com.example.grubber.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
@@ -37,6 +38,13 @@ public class MainActivity extends Activity {
     public void openSearchDialog(View view) {
     	onSearchRequested();
     }
+    
+    public void doSignup(View view) {
+       	Intent intent = new Intent(this, signupActivity.class);
+       	Log.d("bug", "sign up in main!!");
+    	startActivity(intent);    
+    }
+    
     
 
 }

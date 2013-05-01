@@ -68,6 +68,12 @@
             android:label="@string/title_activity_register"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
+        <activity
+            android:name="com.example.grubber.signupActivity"
+            android:label="@string/title_activity_signup"
+             android:windowSoftInputMode="adjustResize|stateVisible"  >
+          
+        </activity>
         
         <!-- Google Maps API -->
         <meta-data
