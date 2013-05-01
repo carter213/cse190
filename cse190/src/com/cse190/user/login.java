@@ -53,12 +53,12 @@ public class login extends HttpServlet {
 			// Allow either email or username to be submitted
 			String sql;
 			if (email!=null) {  
-				sql = "SELECT password FROM user WHERE email = ?";
+				sql = "SELECT user_id, password FROM user WHERE email = ?";
 				stmt = conn.prepareStatement(sql);
 				stmt.setString(1, email);
 			}
 			else if (username!=null) {
-				sql = "SELECT password FROM user WHERE username = ?";
+				sql = "SELECT user_id, password FROM user WHERE username = ?";
 				stmt = conn.prepareStatement(sql);
 				stmt.setString(1, username);
 			}
@@ -74,13 +74,13 @@ public class login extends HttpServlet {
 			{
 				String stored = rs.getString("password");
 				if (Password.check(password, stored))
-					out.println("True");
+					out.println(rs.getInt("user_id"));
 				else
-					out.println("False");
+					out.println("NULL");
 			}
 			else
 			{
-				out.println("User does not exist");	
+				out.println("NULL");	
 			}
 
 			//STEP 6: Clean-up environment
