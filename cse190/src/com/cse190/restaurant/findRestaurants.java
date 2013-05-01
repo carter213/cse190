@@ -59,6 +59,9 @@ public class findRestaurants extends HttpServlet {
 		String inzip = request.getParameter("zip");
 		String incity = request.getParameter("city");
 		
+		if (key == null)
+			key = "";
+		
 		String sql = "SELECT * FROM restaurant WHERE";
 		//adding zip on the query
 		if (inzip != null)
@@ -89,7 +92,7 @@ public class findRestaurants extends HttpServlet {
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
 			
-			sql += " name LIKE '%?%'";
+			sql += " name LIKE ?";
 			stmt = conn.prepareStatement(sql);
 			int index = 1;
 			if (inzip != null)
@@ -119,10 +122,9 @@ public class findRestaurants extends HttpServlet {
 				stmt.setDouble(index, (Double.parseDouble(inlongitude) + 0.05));
 				index++;
 			}			
-			stmt.setString(index, key);
+			stmt.setString(index, "%"+key+"%");
 			ResultSet rs = stmt.executeQuery();
-				
-			
+							
 			JsonArray jsarr = new JsonArray();
 			
 			while (rs.next()) {
@@ -136,9 +138,25 @@ public class findRestaurants extends HttpServlet {
 	            String city = rs.getString("city");
 	            String state = rs.getString("state");
 
-	            float distance = calcDistance(Double.parseDouble(inlatitude), Double.parseDouble(inlongitude), latitude, longitude);
-	            if (distance <= 1)
+	            if (inlatitude!=null && inlongitude!=null)
 	            {
+		            float distance = calcDistance(Double.parseDouble(inlatitude), Double.parseDouble(inlongitude), latitude, longitude);
+	            	if (distance <= 1) {
+		            	JsonObject obj = new JsonObject();
+		            	obj.addProperty("id", id);
+		            	obj.addProperty("name", name);
+		            	obj.addProperty("address", address);
+		            	obj.addProperty("city", city);
+		            	obj.addProperty("state", state);
+		            	obj.addProperty("latitude", latitude);
+		            	obj.addProperty("longitude", longitude);
+		            	obj.addProperty("phone", phone);
+		            	obj.addProperty("website", website);
+		            	obj.addProperty("distance", distance);		            	
+		            	jsarr.add(obj);	    
+	            	}
+	            }
+	            else {
 	            	JsonObject obj = new JsonObject();
 	            	obj.addProperty("id", id);
 	            	obj.addProperty("name", name);
@@ -149,9 +167,8 @@ public class findRestaurants extends HttpServlet {
 	            	obj.addProperty("longitude", longitude);
 	            	obj.addProperty("phone", phone);
 	            	obj.addProperty("website", website);
-	            	obj.addProperty("distance", distance);
-	            	
-	            	jsarr.add(obj);	            	
+	            	obj.addProperty("distance", -1.0);		            	
+	            	jsarr.add(obj);	 	            	
 	            }
 	        }
 
