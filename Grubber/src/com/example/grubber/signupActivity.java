@@ -21,7 +21,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 
-public class signupActivity extends Activity implements View.OnClickListener  {
+public class SignupActivity extends Activity implements View.OnClickListener  {
 	
 	public final int pwdToShort = 5;
 	

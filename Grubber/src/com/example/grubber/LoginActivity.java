@@ -31,7 +31,7 @@ import android.content.Intent;
  */
 public class LoginActivity extends Activity {
     public void goToRegister(View view) {
-    	Intent intent = new Intent(this, signupActivity.class);
+    	Intent intent = new Intent(this, SignupActivity.class);
     	startActivity(intent);	
     }
     
