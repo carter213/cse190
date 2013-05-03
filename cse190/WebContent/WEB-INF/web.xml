@@ -31,6 +31,16 @@
   </servlet-mapping>
   <servlet>
     <description></description>
+    <display-name>createUser</display-name>
+    <servlet-name>createUser</servlet-name>
+    <servlet-class>com.cse190.user.createUser</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>createUser</servlet-name>
+    <url-pattern>/createUser</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
     <display-name>updateUser</display-name>
     <servlet-name>updateUser</servlet-name>
     <servlet-class>com.cse190.user.updateUser</servlet-class>
