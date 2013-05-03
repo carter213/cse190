@@ -21,16 +21,16 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 
-public class signupActivity extends Activity implements View.OnClickListener  {
+public class SignupActivity extends Activity implements View.OnClickListener  {
 	
 	public final int pwdToShort = 5;
 	
-	public final String pwdToShortError = "passwrod at least 5 ";
-	public final String firstnameError = " first name can't be null";
-	public final String lastnameError = " last name can't be null";
-	public final String usernameError = "user name can't be null";
-	public final String noValid = "No Valid";
-	public final String pwdDiffError = "different password";
+	public final String pwdToShortError = "Password needs to be at least 5 characters.";
+	public final String noValid = "Not Valid.";
+	public final String pwdDiffError = "The passwords do not match.";
+	public final String firstnameError = "First name is required.";
+	public final String lastnameError = "Last name is required.";
+	public final String usernameError = "User name is required.";
 	//UI Id
 	private EditText usernameET ;
 	private EditText pwdET;

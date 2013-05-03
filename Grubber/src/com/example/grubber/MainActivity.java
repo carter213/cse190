@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
     }
     
     public void doSignup(View view) {
-       	Intent intent = new Intent(this, signupActivity.class);
+       	Intent intent = new Intent(this, SignupActivity.class);
     	startActivity(intent);    
     }
     public void doProfile(View view){
