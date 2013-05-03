@@ -69,11 +69,11 @@ public class updateUser extends HttpServlet {
 				stmt.setString(4, last_name);
 				stmt.setString(5, username);
 				stmt.executeUpdate();
-				out.println("Success");
+				out.println("TRUE");
 			}
 			else
 			{
-				out.println("Error, duplicate found");
+				out.println("NULL");
 			}
 
 			//STEP 6: Clean-up environment
