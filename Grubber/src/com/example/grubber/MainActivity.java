@@ -43,7 +43,16 @@ public class MainActivity extends Activity {
        	Intent intent = new Intent(this, signupActivity.class);
     	startActivity(intent);    
     }
+    public void doProfile(View view){
+    	Intent intent = new Intent(this, ProfileActivity.class);
+    	startActivity(intent);    
+    	
+    }
     
-    
+    public void doSignOut(View view){
+    	UserInfoHelper user = UserInfoHelper.getInstance();
+    	user.signOut();
+    	
+    }
 
 }
