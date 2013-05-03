@@ -191,22 +191,24 @@ containing a value of this type.
         public static final int activity_login=0x7f030000;
         public static final int activity_main=0x7f030001;
         public static final int activity_profile=0x7f030002;
-        public static final int activity_results=0x7f030003;
-        public static final int activity_signup=0x7f030004;
+        public static final int activity_restaurant=0x7f030003;
+        public static final int activity_results=0x7f030004;
+        public static final int activity_signup=0x7f030005;
     }
     public static final class menu {
         public static final int login=0x7f090000;
         public static final int main=0x7f090001;
         public static final int register=0x7f090002;
-        public static final int results=0x7f090003;
+        public static final int restaurant=0x7f090003;
+        public static final int results=0x7f090004;
     }
     public static final class string {
-        public static final int action_forgot_password=0x7f060021;
-        public static final int action_register=0x7f060028;
+        public static final int action_forgot_password=0x7f060022;
+        public static final int action_register=0x7f060029;
         public static final int action_settings=0x7f060015;
-        public static final int action_sign_in=0x7f06001f;
-        public static final int action_sign_in_short=0x7f060020;
-        public static final int action_sign_up=0x7f060029;
+        public static final int action_sign_in=0x7f060020;
+        public static final int action_sign_in_short=0x7f060021;
+        public static final int action_sign_up=0x7f06002a;
         public static final int app_name=0x7f060014;
         /**   Title for notification shown when GooglePlayServices is unavailable [CHAR LIMIT=70] 
          */
@@ -270,34 +272,35 @@ containing a value of this type.
         find the service-side assets. [CHAR LIMIT=25] 
          */
         public static final int common_signin_button_text_long=0x7f06000d;
-        public static final int error_field_required=0x7f060026;
-        public static final int error_incorrect_password=0x7f060025;
-        public static final int error_invalid_email=0x7f060023;
-        public static final int error_invalid_password=0x7f060024;
+        public static final int error_field_required=0x7f060027;
+        public static final int error_incorrect_password=0x7f060026;
+        public static final int error_invalid_email=0x7f060024;
+        public static final int error_invalid_password=0x7f060025;
         public static final int hello_world=0x7f060016;
         public static final int login=0x7f06001b;
-        public static final int login_progress_signing_in=0x7f060022;
+        public static final int login_progress_signing_in=0x7f060023;
         public static final int profile_myVoteTV=0x7f060011;
         public static final int profile_nameTV=0x7f060012;
         /**  Strings related to login 
          */
-        public static final int prompt_email=0x7f06001d;
-        public static final int prompt_password=0x7f06001e;
+        public static final int prompt_email=0x7f06001e;
+        public static final int prompt_password=0x7f06001f;
         public static final int search=0x7f060017;
         public static final int search_hint=0x7f060018;
         public static final int search_nearby=0x7f060019;
-        public static final int signup_confirm_btn=0x7f06002d;
-        public static final int signup_email_TV=0x7f06002f;
-        public static final int signup_firstname_TV=0x7f060030;
-        public static final int signup_lastname_TV=0x7f060031;
-        public static final int signup_pwd_TV=0x7f06002b;
-        public static final int signup_pwd_reenter_TV=0x7f06002c;
-        public static final int signup_username_TV=0x7f06002a;
-        public static final int title_activity_login=0x7f06001c;
+        public static final int signup_confirm_btn=0x7f06002e;
+        public static final int signup_email_TV=0x7f060030;
+        public static final int signup_firstname_TV=0x7f060031;
+        public static final int signup_lastname_TV=0x7f060032;
+        public static final int signup_pwd_TV=0x7f06002c;
+        public static final int signup_pwd_reenter_TV=0x7f06002d;
+        public static final int signup_username_TV=0x7f06002b;
+        public static final int title_activity_login=0x7f06001d;
         public static final int title_activity_profile=0x7f060013;
-        public static final int title_activity_register=0x7f060027;
+        public static final int title_activity_register=0x7f060028;
+        public static final int title_activity_restaurant=0x7f06001c;
         public static final int title_activity_results=0x7f06001a;
-        public static final int title_activity_signup=0x7f06002e;
+        public static final int title_activity_signup=0x7f06002f;
     }
     public static final class style {
         /** 
