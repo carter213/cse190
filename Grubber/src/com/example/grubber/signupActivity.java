@@ -98,15 +98,23 @@ public class signupActivity extends Activity implements View.OnClickListener  {
 				errorCheck = true;
 			}
 		   
+		   //error the input text
 			if(!errorCheck){
-				checkLogin(emailET.getText().toString(),pwdET.getText().toString(),usernameET.getText().toString(),firstnameET.getText().toString(), 
-								lastnameET.getText().toString());
-				Toast.makeText(this, usernameET.getText().toString() + "  is connected.", Toast.LENGTH_LONG).show();
 				
-				//set global user info
-				 UserInfoHelper user = UserInfoHelper.getInstance();
-			     user.setAll(usernameET.getText().toString(),emailET.getText().toString(),firstnameET.getText().toString(),
+				
+				//get the error for the servlet
+				boolean userFailFalg = checkLogin(emailET.getText().toString(),pwdET.getText().toString(),usernameET.getText().toString(),firstnameET.getText().toString(), 
+								lastnameET.getText().toString());
+						
+				if(userFailFalg){
+					//set global user info
+					Toast.makeText(this, usernameET.getText().toString() + "  is connected.", Toast.LENGTH_LONG).show();
+					UserInfoHelper user = UserInfoHelper.getInstance();
+					user.setAll(usernameET.getText().toString(),emailET.getText().toString(),firstnameET.getText().toString(),
 						     lastnameET.getText().toString());
+				}else{
+					
+				}
 			}
 		
 	 }
