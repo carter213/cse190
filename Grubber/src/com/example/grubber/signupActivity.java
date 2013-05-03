@@ -19,9 +19,9 @@ public class signupActivity extends Activity implements View.OnClickListener  {
 	
 	public final int pwdToShort = 5;
 	
-	public final String pwdToShortError = "passwrod at least 5 ";
-	public final String noValid = "No Valid";
-	public final String pwdDiffError = "different password";
+	public final String pwdToShortError = "Password needs to be at least 5 characters.";
+	public final String noValid = "Not Valid.";
+	public final String pwdDiffError = "The passwords do not match.";
 	//UI Id
 	private EditText usernameET ;
 	private EditText pwdET;
