@@ -70,7 +70,7 @@
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
         <activity
-            android:name="com.example.grubber.signupActivity"
+            android:name="com.example.grubber.SignupActivity"
             android:label="@string/title_activity_signup"
              android:windowSoftInputMode="adjustResize|stateVisible"  >
         </activity>

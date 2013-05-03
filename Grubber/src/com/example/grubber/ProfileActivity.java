@@ -1,5 +1,9 @@
 package com.example.grubber;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -56,6 +60,7 @@ public class ProfileActivity extends Activity {
 			
 		if(!user.getIsSignIn()){
 			userNameTV.setText("Guest");
+			
 		}else{
 			userNameTV.setText(user.getUserName());
 			nameTV.setText(user.getFirstName()+ " " + user.getLastName());
@@ -63,11 +68,17 @@ public class ProfileActivity extends Activity {
 			//need to add the vote history!!
 			
 		}
+	
+		
+		
+		
 		
 		
 		
 		
 	}
+	
+	
 	
 	
 	

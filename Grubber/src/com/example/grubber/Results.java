@@ -6,10 +6,16 @@ import com.example.grubber.R.menu;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
+import android.support.v4.app.Fragment;
 
-public class Results extends Activity {
 
+public class Results extends FragmentActivity {
+	public FragmentManager fragMan;
+
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -22,5 +28,6 @@ public class Results extends Activity {
 		getMenuInflater().inflate(R.menu.results, menu);
 		return true;
 	}
+
 
 }
