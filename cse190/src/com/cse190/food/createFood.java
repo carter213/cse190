@@ -52,6 +52,9 @@ public class createFood extends HttpServlet {
 		else {
 			rest_id = Integer.parseInt(rest_id_result);
 		}
+		
+		if (description == null)
+			description = "";
 	
 		Connection conn = null;
 		PreparedStatement stmt = null;
