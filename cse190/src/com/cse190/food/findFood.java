@@ -47,7 +47,7 @@ public class findFood extends HttpServlet {
 		
 		if (rest_id_result == null)
 		{
-			out.println("Error, parameter not complete");
+			out.println("Error, parameter missing");
 			return;
 		}
 		else {

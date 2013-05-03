@@ -122,17 +122,31 @@ public class createRestaurant extends HttpServlet {
 			rs.next();
 			if(rs.getRow() == 0)
 			{
-				sql = "INSERT INTO restaurant (name, address, city, state, zip, latitude, longitude, phone, website) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-				stmt = conn.prepareStatement(sql);
-				stmt.setString(1, name);
-				stmt.setString(2, address);
-				stmt.setString(3, city);
-				stmt.setString(4, state);
-				stmt.setString(5, zip);
-				stmt.setDouble(6, latitude);
-				stmt.setDouble(7, longitude);
-				stmt.setString(8, phone);
-				stmt.setString(9, website);
+				if (website != null) {
+					sql = "INSERT INTO restaurant (name, address, city, state, zip, latitude, longitude, phone, website) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					stmt = conn.prepareStatement(sql);
+					stmt.setString(1, name);
+					stmt.setString(2, address);
+					stmt.setString(3, city);
+					stmt.setString(4, state);
+					stmt.setString(5, zip);
+					stmt.setDouble(6, latitude);
+					stmt.setDouble(7, longitude);
+					stmt.setString(8, phone);
+					stmt.setString(9, website);
+				}
+				else {
+					sql = "INSERT INTO restaurant (name, address, city, state, zip, latitude, longitude, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+					stmt = conn.prepareStatement(sql);
+					stmt.setString(1, name);
+					stmt.setString(2, address);
+					stmt.setString(3, city);
+					stmt.setString(4, state);
+					stmt.setString(5, zip);
+					stmt.setDouble(6, latitude);
+					stmt.setDouble(7, longitude);
+					stmt.setString(8, phone);
+				}
 
 				stmt.executeUpdate();
 				out.println("Success");
