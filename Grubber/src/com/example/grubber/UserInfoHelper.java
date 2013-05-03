@@ -11,6 +11,7 @@ public class UserInfoHelper  {
 	private String m_email;
 	private String m_userName;
 	private boolean is_signIn;
+	private int m_userId;
 	
 	public static synchronized UserInfoHelper getInstance(){
 		
