@@ -7,12 +7,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.JsonObject;
 
 /**
  * Servlet implementation class login
@@ -50,6 +51,7 @@ public class login extends HttpServlet {
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
 			
+			JsonObject js = new JsonObject();
 			// Allow either email or username to be submitted
 			String sql;
 			if (email!=null) {  
@@ -63,7 +65,10 @@ public class login extends HttpServlet {
 				stmt.setString(1, username);
 			}
 			else {
-				out.println("False");
+				//out.println("Error, parameter required");
+				js.addProperty("result", false);
+				js.addProperty("message", "Parameter required");
+				out.println(js.toString());
 				return;
 			}
 			
@@ -74,15 +79,24 @@ public class login extends HttpServlet {
 			{
 				String stored = rs.getString("password");
 				if (Password.check(password, stored))
-					out.println(rs.getInt("user_id"));
+				{
+					js.addProperty("result", true);
+					js.addProperty("message", "Login success");
+					js.addProperty("user_id", rs.getInt("user_id"));
+				}
 				else
-					out.println("NULL");
+				{
+					js.addProperty("result", false);
+					js.addProperty("message", "Wrong username or password");
+				}
 			}
 			else
 			{
-				out.println("NULL");	
+				js.addProperty("result", false);
+				js.addProperty("message", "Wrong username or password");
 			}
-
+			out.println(js.toString());
+			
 			//STEP 6: Clean-up environment
 			stmt.close();
 			conn.close();

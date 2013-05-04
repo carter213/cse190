@@ -1,7 +1,5 @@
 package com.cse190.user;
 
-import java.sql.*;
-import javax.sql.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,13 +8,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.JsonObject;
 
 /**
  * Servlet implementation class userConnect
@@ -56,6 +55,18 @@ public class createUser extends HttpServlet {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
+		JsonObject js = new JsonObject();
+		
+		//***REQUIRED PARAMETER
+		if (username == null || password == null || email == null)
+		{
+			js.addProperty("result", false);
+			js.addProperty("message", "Missing parameter");
+			out.println(js.toString());
+			return;
+		}
+		//*******
+		
 		
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -65,7 +76,7 @@ public class createUser extends HttpServlet {
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
 			
-			String sql = "SELECT username FROM user WHERE username = ? OR email = ?";
+			String sql = "SELECT username, email FROM user WHERE username = ? OR email = ?";
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, username);
 			stmt.setString(2, email);
@@ -83,12 +94,26 @@ public class createUser extends HttpServlet {
 				stmt.setString(4, first_name);
 				stmt.setString(5, last_name);
 				stmt.executeUpdate();
-				out.println("TRUE");
+				js.addProperty("result", true);
+				js.addProperty("message", "User register success");
 			}
 			else
 			{
-				out.println("NULL");
+				js.addProperty("result", false);
+				if(email.equals(rs.getString("email")))
+				{
+					js.addProperty("message", "Email already exists");
+				}
+				else if(username.equals(rs.getString("username")))
+				{
+					js.addProperty("message", "Username already exists");
+				}
+				else
+				{
+					js.addProperty("message", "Unknown error");
+				}
 			}
+			out.println(js.toString());
 
 			//STEP 6: Clean-up environment
 			stmt.close();

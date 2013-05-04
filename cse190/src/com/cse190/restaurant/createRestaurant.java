@@ -1,28 +1,19 @@
 package com.cse190.restaurant;
 
-import com.cse190.helper.GeoLocation;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.URL;
-import java.net.URLConnection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 /**
  * Servlet implementation class createRestaurant
@@ -33,48 +24,6 @@ public class createRestaurant extends HttpServlet {
 	//  Database credentials
 	static String USER = "cse190";
 	static String PASS = "yelp190";
-	
-	public GeoLocation getCoordinate(String add) //throws Exception
-	{
-		String newadd = add.replace(" " , "+");
-
-		try{
-			URL google = new URL("http://maps.googleapis.com/maps/api/geocode/json?address="+ newadd +"&sensor=false");
-			
-	        URLConnection yc = google.openConnection();
-	        
-	
-	        BufferedReader in = new BufferedReader(
-	                                new InputStreamReader(
-	                                yc.getInputStream()));
-	        String inputLine;
-	        String app ="";
-	        while ((inputLine = in.readLine()) != null) 
-	        {
-	        	app = app + inputLine;
-	
-	        }
-	        in.close();
-	
-	        //**********
-	        JsonParser parser = new JsonParser();
-		    
-		    JsonObject obj = (JsonObject) parser.parse(app);
-		    JsonArray results = (JsonArray) obj.get("results");
-		    JsonObject res = (JsonObject) results.get(0);
-		    JsonObject geometry = (JsonObject) res.get("geometry");
-		    
-		    JsonObject location = (JsonObject) geometry.get("location");
-		    double lat = location.get("lat").getAsDouble();
-		    double lng = location.get("lng").getAsDouble();
-		    
-	        return new GeoLocation(lat, lng);
-		}
-		catch (Exception e)
-		{
-			return new GeoLocation(0, 0);
-		}
-	}
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -92,19 +41,21 @@ public class createRestaurant extends HttpServlet {
 		
 		String name = request.getParameter("name");
 		String address = request.getParameter("address");
-		String city = request.getParameter("city");
-		String state = request.getParameter("state");
-		String zip = request.getParameter("zip");
 		String phone = request.getParameter("phone");
 		String website = request.getParameter("website");
+		
+		//find location
+		String city = request.getParameter("city");
+		String state = request.getParameter("state");
+		//OR
+		String zip = request.getParameter("zip");
 
 		//Can be done on android
 		//So the android sent all check data to the servlet
-		GeoLocation loc = getCoordinate(address + city + state);
-		double latitude = loc.getLatitude();
-		double longitude = loc.getLongitude();
+		Restaurant rest = new Restaurant(name, address, phone, website, city, state, zip);
 		//*******
 	
+		JsonObject obj = new JsonObject();
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try{
@@ -126,12 +77,12 @@ public class createRestaurant extends HttpServlet {
 					sql = "INSERT INTO restaurant (name, address, city, state, zip, latitude, longitude, phone, website) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 					stmt = conn.prepareStatement(sql);
 					stmt.setString(1, name);
-					stmt.setString(2, address);
-					stmt.setString(3, city);
-					stmt.setString(4, state);
-					stmt.setString(5, zip);
-					stmt.setDouble(6, latitude);
-					stmt.setDouble(7, longitude);
+					stmt.setString(2, rest.getAddress());
+					stmt.setString(3, rest.getCity());
+					stmt.setString(4, rest.getState());
+					stmt.setInt(5, rest.getZip());
+					stmt.setDouble(6, rest.getLatitude());
+					stmt.setDouble(7, rest.getLongitude());
 					stmt.setString(8, phone);
 					stmt.setString(9, website);
 				}
@@ -139,23 +90,25 @@ public class createRestaurant extends HttpServlet {
 					sql = "INSERT INTO restaurant (name, address, city, state, zip, latitude, longitude, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 					stmt = conn.prepareStatement(sql);
 					stmt.setString(1, name);
-					stmt.setString(2, address);
-					stmt.setString(3, city);
-					stmt.setString(4, state);
-					stmt.setString(5, zip);
-					stmt.setDouble(6, latitude);
-					stmt.setDouble(7, longitude);
+					stmt.setString(2, rest.getAddress());
+					stmt.setString(3, rest.getCity());
+					stmt.setString(4, rest.getState());
+					stmt.setInt(5, rest.getZip());
+					stmt.setDouble(6, rest.getLatitude());
+					stmt.setDouble(7, rest.getLongitude());
 					stmt.setString(8, phone);
 				}
 
 				stmt.executeUpdate();
-				out.println("Success");
+				obj.addProperty("result", true);
+				obj.addProperty("message", "Restaurant register success");
 			}
 			else
 			{
-				out.println("Error, duplicate found");
+				obj.addProperty("result", false);
+				obj.addProperty("message", "Duplicate restaurant");
 			}
-			
+			out.println(obj.toString());
 
 			//STEP 6: Clean-up environment
 			stmt.close();
