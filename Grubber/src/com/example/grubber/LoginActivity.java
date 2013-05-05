@@ -6,6 +6,8 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import com.example.grubber.R;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -16,12 +18,14 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.content.Intent;
 
 
@@ -226,8 +230,15 @@ public class LoginActivity extends Activity {
 				return false;
 			}
 
-			if(checkLogin(mEmail,mPassword))
-				return true;
+			JsonObject obj = checkLogin(mEmail,mPassword);
+			
+			if(obj != null)
+			{
+				Log.d("bug", obj.get("message").toString());
+				
+				return obj.get("result").getAsBoolean();
+			}
+				//return true;
 
 			// TODO: register the new account here.
 			return false;
@@ -247,7 +258,7 @@ public class LoginActivity extends Activity {
 			}
 		}
 		
-		protected boolean checkLogin(String email, String password){
+		protected JsonObject checkLogin(String email, String password){
 			URL url;
 			URLConnection uc;
 			BufferedReader data;
@@ -256,22 +267,16 @@ public class LoginActivity extends Activity {
 				uc = url.openConnection();
 				data = new BufferedReader(new InputStreamReader(uc.getInputStream()));
 				String inputLine = data.readLine();
-				String tr = "NULL";
-				if(!inputLine.equals(tr))
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
+				JsonParser parser = new JsonParser();
+				return (JsonObject) parser.parse(inputLine);
+
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				//No Connection
-				return false;
+				return null;
 			}
 		}
-
+		
 
 		@Override
 		protected void onCancelled() {
