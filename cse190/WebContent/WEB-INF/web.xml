@@ -51,6 +51,16 @@
   </servlet-mapping>
   <servlet>
     <description></description>
+    <display-name>getUser</display-name>
+    <servlet-name>getUser</servlet-name>
+    <servlet-class>com.cse190.user.getUser</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>getUser</servlet-name>
+    <url-pattern>/getUser</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
     <display-name>findRestaurants</display-name>
     <servlet-name>findRestaurants</servlet-name>
     <servlet-class>com.cse190.restaurant.findRestaurants</servlet-class>

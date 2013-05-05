@@ -48,15 +48,8 @@ public class createUser extends HttpServlet {
 		String first_name = request.getParameter("first_name");
 		String last_name = request.getParameter("last_name");
 		
-		// Get the hash of their password and store this instead
-		String hash = "";
-		try {
-			hash = Password.getSaltedHash(password);
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
 		JsonObject js = new JsonObject();
-		
+
 		//***REQUIRED PARAMETER
 		if (username == null || password == null || email == null)
 		{
@@ -67,6 +60,23 @@ public class createUser extends HttpServlet {
 		}
 		//*******
 		
+		// Get the hash of their password and store this instead
+		String hash = "";
+		try {
+			hash = Password.getSaltedHash(password);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
+		if (first_name == null)
+		{
+			first_name ="";
+		}
+		
+		if (last_name == null)
+		{
+			last_name = "";
+		}
 		
 		Connection conn = null;
 		PreparedStatement stmt = null;
