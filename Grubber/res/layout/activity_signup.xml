@@ -7,13 +7,16 @@
     <ScrollView
         android:id="@+id/signUp_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+          >
 
         <LinearLayout
             style="@style/LoginFormContainer"
             android:layout_height="192dp"
             android:gravity="center"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:focusable="true" 
+    		 android:focusableInTouchMode="true" >
 
             <LinearLayout
                 android:layout_width="match_parent"

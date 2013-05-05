@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,14 +22,16 @@ import android.widget.Toast;
 public class ProfileActivity extends Activity {
 
 	private ImageView userIV ;
-	private TextView userNameTV;
-	private TextView nameTV;
-	private TextView emailTV;
+	private TextView userIDTV;
+	private EditText nameET;
+	private EditText emailET;
+	private EditText userNameET;
 	private ListView myVoteLV;
 	
 	static final String[] FRUITS = new String[] { "Apple", "Avocado", "Banana",
 		"Blueberry", "Coconut", "Durian", "Guava", "Kiwifruit",
 		"Jackfruit", "Mango", "Olive", "Pear", "Sugar-apple" };
+	public static final String GUESTMSG = "N/a";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +43,10 @@ public class ProfileActivity extends Activity {
 		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); 
 		
 		userIV = (ImageView) findViewById(R.id.profile_userIV);
-		userNameTV = (TextView)findViewById(R.id.profile_displayUserNameTV);
-		nameTV = (TextView)findViewById(R.id.profile_displayNameTV);
-		emailTV = (TextView)findViewById(R.id.profile_displayEmailTV);
+		userIDTV = (TextView)findViewById(R.id.profile_userIDTV);
+		userNameET= (EditText)findViewById(R.id.profile_userNameET);
+		nameET = (EditText)findViewById(R.id.profile_nameET);
+		emailET = (EditText)findViewById(R.id.profile_emailET);
 		myVoteLV = (ListView)findViewById(R.id.profile_myVoteLV);
 		
 		UserInfoHelper user = UserInfoHelper.getInstance();
@@ -59,12 +63,18 @@ public class ProfileActivity extends Activity {
 		
 			
 		if(!user.getIsSignIn()){
-			userNameTV.setText("Guest");
+			userIDTV.setText(GUESTMSG);
+			userNameET.setText(GUESTMSG);
+			nameET.setText(GUESTMSG);
+			emailET.setText(GUESTMSG);
+			userNameET.setEnabled(false);
+			nameET.setEnabled(false);
+			emailET.setEnabled(false);
 			
 		}else{
-			userNameTV.setText(user.getUserName());
-			nameTV.setText(user.getFirstName()+ " " + user.getLastName());
-			emailTV.setText(user.getEmail());
+			userIDTV.setText(user.getUserName());
+			nameET.setText(user.getFirstName()+ " " + user.getLastName());
+			emailET.setText(user.getEmail());
 			//need to add the vote history!!
 			
 		}
