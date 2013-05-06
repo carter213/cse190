@@ -10,8 +10,12 @@ import java.util.regex.Pattern;
 
 import com.example.grubber.R;
 import com.example.grubber.R.layout;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -98,22 +102,13 @@ public class SignupActivity extends Activity implements View.OnClickListener  {
 				errorCheck = true;
 			}
 		   
+		   //error the input text
 			if(!errorCheck){
-				checkLogin(emailET.getText().toString(),pwdET.getText().toString(),usernameET.getText().toString(),firstnameET.getText().toString(), 
-								lastnameET.getText().toString());
-				Toast.makeText(this, usernameET.getText().toString() + "  is connected.", Toast.LENGTH_LONG).show();
+				RegisterTask task = new RegisterTask();
+				task.execute((Void) null);
 				
-				//set global user info
-				 UserInfoHelper user = UserInfoHelper.getInstance();
-			     user.setAll(usernameET.getText().toString(),emailET.getText().toString(),firstnameET.getText().toString(),
-						     lastnameET.getText().toString());
 			}
-		
-	 }
-		
-		
-		
-		
+		}
 	}
 	
 	public final static boolean isValidEmail(CharSequence target) {
@@ -126,34 +121,49 @@ public class SignupActivity extends Activity implements View.OnClickListener  {
 	    
 	}
 	
+	private class RegisterTask extends AsyncTask<Void, Void, Boolean> {
+
+		protected Boolean doInBackground(Void... params) {
+			JsonObject obj = userRegister(emailET.getText().toString(),pwdET.getText().toString(),usernameET.getText().toString(),firstnameET.getText().toString(), 
+					lastnameET.getText().toString());
 	
-	protected boolean checkLogin(String email, String password, String username, String firstname, String lastname){
-		URL url;
-		URLConnection uc;
-		BufferedReader data;
-		try {
-			url = new URL("http://cse190.myftp.org:8080/cse190/createUser?email=" + email + "&password=" + password + "&username=" + username
-						  + "&first_name=" + firstname + "&last_name=" + lastname);
-			uc = url.openConnection();
-			data = new BufferedReader(new InputStreamReader(uc.getInputStream()));
-			String inputLine = data.readLine();
-			String tr = "NULL";
-			if(!inputLine.equals(tr))
-			{
-				
-				return true;
+			if(obj != null){
+				if(obj.get("result").getAsBoolean()){
+					//open login page or confirmation page (Matteo)
+		
+					//set global user info
+					//Toast.makeText(this, obj.get("message").toString(), Toast.LENGTH_LONG).show();
+					//UserInfoHelper user = UserInfoHelper.getInstance();
+					//user.setAll(usernameET.getText().toString(),emailET.getText().toString(),firstnameET.getText().toString(),
+					//lastnameET.getText().toString());
+				}
+				Log.d("bug", obj.get("message").toString());
+				return obj.get("result").getAsBoolean();
+				//Toast.makeText(this, obj.get("message").toString(), Toast.LENGTH_LONG).show();
+
 			}
-			else
-			{
-				return false;
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			//No Connection
 			return false;
 		}
+
+		protected JsonObject userRegister(String email, String password, String username, String firstname, String lastname){
+			URL url;
+			URLConnection uc;
+			BufferedReader data;
+
+			try {
+				url = new URL("http://cse190.myftp.org:8080/cse190/createUser?email=" + email + "&password=" + password + "&username=" + username
+						  + "&first_name=" + firstname + "&last_name=" + lastname);
+				uc = url.openConnection();
+				data = new BufferedReader(new InputStreamReader(uc.getInputStream()));
+				String inputLine = data.readLine();
+				JsonParser parser = new JsonParser();
+				return (JsonObject) parser.parse(inputLine);
+
+			} catch (Exception e) {
+				//No Connection
+				return null;
+			}
+		}
+
 	}
-	
-
-
 }

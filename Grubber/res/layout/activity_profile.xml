@@ -3,53 +3,83 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ProfileActivity" >
  
-
-
          <LinearLayout
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:orientation="vertical" >
+             android:gravity="center"
+             android:orientation="vertical" 
+             android:focusable="true" 
+    		 android:focusableInTouchMode="true">
 
+      
+             
+             
              <LinearLayout
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content" >
-
-                 <ImageView
-                     android:id="@+id/profile_userIV"
-                     android:layout_width="wrap_content"
-                     android:layout_height="58dp"
-                     android:layout_weight="1.53"
-                     android:src="@android:drawable/ic_menu_call" />
-
-                 <TextView
-                     android:id="@+id/profile_displayUserNameTV"
-                     android:layout_width="252dp"
-                     android:layout_height="match_parent"
-                     android:text="user ID"
-                     
-                     android:textAppearance="?android:attr/textAppearanceMedium" />
-             </LinearLayout>
-
-			  <LinearLayout
 			      android:layout_width="match_parent"
 			      android:layout_height="wrap_content"
-			      android:layout_marginTop="40dip" >
+			      android:layout_marginTop="2dip" >
 
 			      <TextView
-			          android:id="@+id/profile_nameTV"
+			          android:id="@+id/profile_userNameTV"
 			          android:layout_width="wrap_content"
 			          android:layout_height="wrap_content"
-			          android:text="@string/profile_nameTV"
+			          android:text="@string/signup_username_TV"
 			          android:textAppearance="?android:attr/textAppearanceMedium" />
 
-			      <TextView
-			          android:id="@+id/profile_displayNameTV"
+			      <EditText
+			          android:id="@+id/profile_userNameET"
 			          android:layout_width="wrap_content"
 			          android:layout_height="wrap_content"
 			          android:layout_weight="0.92"
+			           android:singleLine="true"  
 			          android:textAppearance="?android:attr/textAppearanceMedium" />
 			  </LinearLayout>
+             
+             
+             
+             
+             
+			  <LinearLayout
+			      android:layout_width="match_parent"
+			      android:layout_height="wrap_content" >
+
+			      <TextView
+			          android:id="@+id/profile_firstNameTV"
+			          android:layout_width="wrap_content"
+			          android:layout_height="wrap_content"
+			          android:singleLine="true"
+			          android:text="@string/signup_firstname_TV"
+			          android:textAppearance="?android:attr/textAppearanceMedium" />
+
+			      <EditText
+			          android:id="@+id/profile_firstNameET"
+			          android:layout_width="wrap_content"
+			          android:layout_height="wrap_content"
+			          android:layout_weight="0.92"
+			          android:textAppearance="?android:attr/textAppearanceMedium"
+			           android:singleLine="true"   />
+			  </LinearLayout>
 			  
+			  <LinearLayout
+			      android:layout_width="match_parent"
+			      android:layout_height="wrap_content" >
+
+			      <TextView
+			          android:id="@+id/profile_lastNameTV"
+			          android:layout_width="wrap_content"
+			          android:layout_height="wrap_content"
+			          android:singleLine="true"
+			          android:text="@string/signup_lastname_TV"
+			          android:textAppearance="?android:attr/textAppearanceMedium" />
+
+			      <EditText
+			          android:id="@+id/profile_lastNameET"
+			          android:layout_width="wrap_content"
+			          android:layout_height="wrap_content"
+			          android:layout_weight="0.92"
+			          android:textAppearance="?android:attr/textAppearanceMedium"
+			           android:singleLine="true"   />
+			  </LinearLayout>
 			  
 			  <LinearLayout
 			      android:layout_width="match_parent"
@@ -62,18 +92,39 @@
 			          android:text="@string/signup_email_TV"
 			          android:textAppearance="?android:attr/textAppearanceMedium" />
 
-			      <TextView
-			          android:id="@+id/profile_displayEmailTV"
+			      <EditText
+			          android:id="@+id/profile_emailET"
 			          android:layout_width="wrap_content"
 			          android:layout_height="wrap_content"
 			          android:layout_weight="0.92"
+			          android:singleLine="true"  
 			          android:textAppearance="?android:attr/textAppearanceMedium" />
 			  </LinearLayout>
+			 <LinearLayout
+			      android:layout_width="match_parent"
+			      android:layout_height="wrap_content" >
 
+			      <TextView
+			          android:id="@+id/profile_newPwdTV"
+			          android:layout_width="wrap_content"
+			          android:layout_height="wrap_content"
+			          android:singleLine="true"
+			          android:text="@string/profile_newPwdTV"
+			          android:textAppearance="?android:attr/textAppearanceMedium" />
+
+			      <EditText
+			          android:id="@+id/profile_newPwdET"
+			          android:layout_width="wrap_content"
+			          android:layout_height="wrap_content"
+			          android:layout_weight="0.92"
+			           android:password="true"
+			          android:textAppearance="?android:attr/textAppearanceMedium"
+			           android:singleLine="true"   />
+			  </LinearLayout>
 			  <LinearLayout
 			      android:layout_width="match_parent"
-			      android:layout_height="193dp" 
-			      android:layout_marginTop="40dip">
+			      android:layout_height="153dp"
+			      android:layout_marginTop="8dip" >
 
 			      <TextView
 			          android:id="@+id/profile_myVoteTV"
@@ -82,22 +133,28 @@
 			          android:text="@string/profile_myVoteTV"
 			          android:textAppearance="?android:attr/textAppearanceMedium" />
 
-
 			          <LinearLayout
 			              android:layout_width="match_parent"
-			              android:layout_height="match_parent"
+			              android:layout_height="154dp"
 			              android:orientation="vertical" >
 
 			              <ListView
 			                  android:id="@+id/profile_myVoteLV"
 			                  android:layout_width="match_parent"
-			                  android:layout_height="192dp" >
+			                  android:layout_height="146dp" >
 			              </ListView>
 
 			          </LinearLayout>
 			 
 
 			  </LinearLayout>
+
+			  <Button
+			      android:id="@+id/profile_updateBtn"
+			      android:layout_width="wrap_content"
+			      android:layout_height="wrap_content"
+			      android:text="@string/profile_updateBtn" 
+			      android:layout_marginTop="8dip"/>
 			      
          </LinearLayout>
          

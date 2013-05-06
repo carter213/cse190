@@ -7,7 +7,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonParser;
 
 /**
  * Servlet implementation class findRestaurants
@@ -58,6 +59,7 @@ public class findRestaurants extends HttpServlet {
 		String inlongitude = request.getParameter("longitude");
 		String inzip = request.getParameter("zip");
 		String incity = request.getParameter("city");
+		String radius = request.getParameter("radius");
 		
 		if (key == null)
 			key = "";
@@ -82,6 +84,11 @@ public class findRestaurants extends HttpServlet {
 		if (inlongitude != null)
 		{
 			sql += " longitude >= ? AND longitude <= ? AND";
+		}
+		float rad = 1;
+		if (radius != null)
+		{
+			rad = Float.parseFloat("radius");
 		}
 		
 		Connection conn = null;
@@ -124,8 +131,9 @@ public class findRestaurants extends HttpServlet {
 			}			
 			stmt.setString(index, "%"+key+"%");
 			ResultSet rs = stmt.executeQuery();
-							
-			JsonArray jsarr = new JsonArray();
+				
+			JsonObject obj = new JsonObject();			
+			ArrayList<Restaurant> rest = new ArrayList<Restaurant>();
 			
 			while (rs.next()) {
 				int id = rs.getInt("rest_id");
@@ -137,42 +145,34 @@ public class findRestaurants extends HttpServlet {
 	            String website = rs.getString("website");
 	            String city = rs.getString("city");
 	            String state = rs.getString("state");
+	            int zip = rs.getInt("zip");
 
 	            if (inlatitude!=null && inlongitude!=null)
 	            {
 		            float distance = calcDistance(Double.parseDouble(inlatitude), Double.parseDouble(inlongitude), latitude, longitude);
-	            	if (distance <= 1) {
-		            	JsonObject obj = new JsonObject();
-		            	obj.addProperty("id", id);
-		            	obj.addProperty("name", name);
-		            	obj.addProperty("address", address);
-		            	obj.addProperty("city", city);
-		            	obj.addProperty("state", state);
-		            	obj.addProperty("latitude", latitude);
-		            	obj.addProperty("longitude", longitude);
-		            	obj.addProperty("phone", phone);
-		            	obj.addProperty("website", website);
-		            	obj.addProperty("distance", distance);		            	
-		            	jsarr.add(obj);	    
+	            	if (distance <= rad) {
+		            	rest.add(new Restaurant(id, name, address, city, state, zip, phone, website, latitude, longitude, distance));
 	            	}
 	            }
 	            else {
-	            	JsonObject obj = new JsonObject();
-	            	obj.addProperty("id", id);
-	            	obj.addProperty("name", name);
-	            	obj.addProperty("address", address);
-	            	obj.addProperty("city", city);
-	            	obj.addProperty("state", state);
-	            	obj.addProperty("latitude", latitude);
-	            	obj.addProperty("longitude", longitude);
-	            	obj.addProperty("phone", phone);
-	            	obj.addProperty("website", website);
-	            	obj.addProperty("distance", -1.0);		            	
-	            	jsarr.add(obj);	 	            	
+	            	rest.add(new Restaurant(id, name, address, city, state, zip, phone, website, latitude, longitude, -1));
 	            }
 	        }
 
-			out.println(jsarr.toString());
+			Collections.sort(rest, new Comparator<Restaurant>(){
+				public int compare(Restaurant r1, Restaurant r2) {
+					return r2.compare(r1);
+				}
+			});
+			obj.addProperty("total", rest.size());
+			JsonArray jsarr = new JsonArray();
+
+			for(Restaurant r : rest)
+			{
+				jsarr.add(r.getJson());
+			}
+			obj.add("result", jsarr);
+			out.println(obj.toString());
 
 			//STEP 6: Clean-up environment
 			stmt.close();

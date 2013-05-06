@@ -41,35 +41,7 @@
         android:gravity="center"
         android:onClick="doLogin" />
 
-     <Button
-         android:id="@+id/main_signUpBtn"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_below="@+id/login"
-         android:layout_centerHorizontal="true"
-         android:layout_marginTop="83dp"
-         android:gravity="center"
-         android:onClick="doSignup"
-         android:text="Sign Up" />
 
-     <Button
-         android:id="@+id/main_profileBtn"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignParentBottom="true"
-         android:layout_alignRight="@+id/main_signUp_btn"
-         android:layout_marginBottom="20dp"
-         android:onClick="doProfile"
-         android:text="user profile" />
-
-     <Button
-         android:id="@+id/main_signOutBtn"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignBaseline="@+id/main_profileBtn"
-         android:layout_alignBottom="@+id/main_profileBtn"
-         android:layout_toRightOf="@+id/main_signUpBtn"
-         android:onClick="doSignOut"
-         android:text="Sign Out" />
+     
     
 </RelativeLayout>

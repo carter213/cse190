@@ -11,6 +11,7 @@ public class UserInfoHelper  {
 	private String m_email;
 	private String m_userName;
 	private boolean is_signIn;
+	private int m_userId;
 	
 	public static synchronized UserInfoHelper getInstance(){
 		
@@ -27,13 +28,37 @@ public class UserInfoHelper  {
 		this.is_signIn = false;
 	 }
 	
+	//set every user info
+	public void setAll (int userid,String username, String email,String firstname, String lastname){
+		this.m_userId = userid;
+		this.m_userName = username;
+		this.m_email = email;
+		this.m_firstName = firstname;
+		this.m_lastName = lastname;
+		this.is_signIn = true;
+    }
+	
+	
+	
+	
+	
+	//set every user info expect the userID, 
 	public void setAll (String username, String email,String firstname, String lastname){
 		this.m_userName = username;
 		this.m_email = email;
 		this.m_firstName = firstname;
 		this.m_lastName = lastname;
 		this.is_signIn = true;
-	 }
+    }
+	
+	public void userLogin(int id){
+		this.m_userId = id;
+		this.is_signIn = true;
+	}
+	
+	public void setUserID(int userid){
+		this.m_userId = userid;
+	}
 	
 	 public void setUsername(String username){
 		this.m_userName = username;
@@ -62,13 +87,16 @@ public class UserInfoHelper  {
 	public String getLastName(){
 		return this.m_lastName;
 	}
-	public Boolean getIsSignIn(){
+	public Boolean isSignIn(){
 		return this.is_signIn;
-		
+	}
+	public int getUserID(){
+		return this.m_userId;
 	}
 	
 	
 	public void signOut(){
+		this.m_userId = 0;
 		this.m_userName = "";
 		this.m_email = "";
 		this.m_firstName = "";

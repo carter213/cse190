@@ -6,22 +6,28 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import com.example.grubber.R;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.content.Intent;
 
 
@@ -30,11 +36,18 @@ import android.content.Intent;
  * well.
  */
 public class LoginActivity extends Activity {
+	
+	
+	
     public void goToRegister(View view) {
     	Intent intent = new Intent(this, SignupActivity.class);
     	startActivity(intent);	
     }
     
+    
+    
+    
+    public final Context context = this;
     
 	/**
 	 * A dummy authentication store containing known user names and passwords.
@@ -72,6 +85,7 @@ public class LoginActivity extends Activity {
 	            .build(); */
 
 		setContentView(R.layout.activity_login);
+		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); 
 
 		// Set up the login form.
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
@@ -217,19 +231,19 @@ public class LoginActivity extends Activity {
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			// TODO: attempt authentication against a network service.
-
-			try {
-				// Simulate network access.
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				return false;
+			JsonObject obj = checkLogin(mEmail,mPassword);
+			
+			if(obj != null)
+			{
+				Log.d("bug", obj.get("message").toString());
+				
+				if (obj.get("result").getAsBoolean())
+				{
+					UserInfoHelper user = UserInfoHelper.getInstance();
+					user.userLogin(obj.get("user_id").getAsInt());
+					return true;
+				}
 			}
-
-			if(checkLogin(mEmail,mPassword))
-				return true;
-
-			// TODO: register the new account here.
 			return false;
 		}
 
@@ -247,7 +261,7 @@ public class LoginActivity extends Activity {
 			}
 		}
 		
-		protected boolean checkLogin(String email, String password){
+		protected JsonObject checkLogin(String email, String password){
 			URL url;
 			URLConnection uc;
 			BufferedReader data;
@@ -256,22 +270,16 @@ public class LoginActivity extends Activity {
 				uc = url.openConnection();
 				data = new BufferedReader(new InputStreamReader(uc.getInputStream()));
 				String inputLine = data.readLine();
-				String tr = "NULL";
-				if(!inputLine.equals(tr))
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
+				JsonParser parser = new JsonParser();
+				return (JsonObject) parser.parse(inputLine);
+
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				//No Connection
-				return false;
+				return null;
 			}
 		}
-
+		
 
 		@Override
 		protected void onCancelled() {
