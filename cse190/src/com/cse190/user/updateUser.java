@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.JsonObject;
+
 
 /**
  * Servlet implementation class updateUser
@@ -45,6 +47,25 @@ public class updateUser extends HttpServlet {
 		String first_name = request.getParameter("first_name");
 		String last_name = request.getParameter("last_name");
 
+		JsonObject obj = new JsonObject();
+		if (username == null || password == null || email == null)
+		{
+			obj.addProperty("result", "false");
+			obj.addProperty("message", "Parameter required");
+			out.println(obj.toString());
+			return;
+		}
+		
+		if(first_name == null)
+		{
+			first_name = "";
+		}
+		
+		if(last_name == null)
+		{
+			last_name = "";
+		}
+		
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try{
@@ -61,21 +82,25 @@ public class updateUser extends HttpServlet {
 			rs.next();
 			if(rs.getRow() == 0)
 			{
-				sql = "UPDATE user SET password = ?, email = ?, first_name = ?, last_name = ? WHERE username = ?";
+				sql = "UPDATE user SET password = ?, email = ?, first_name = ?, last_name = ? WHERE user_id = ?";
 				stmt = conn.prepareStatement(sql);
 				stmt.setString(1, password);
 				stmt.setString(2,  email);
 				stmt.setString(3, first_name);
 				stmt.setString(4, last_name);
-				stmt.setString(5, username);
+				stmt.setInt(5, rs.getInt("user_id"));
 				stmt.executeUpdate();
-				out.println("TRUE");
+				obj.addProperty("result", true);
+				obj.addProperty("message", "Update success");
 			}
 			else
 			{
-				out.println("NULL");
+				obj.addProperty("result", false);
+				obj.addProperty("message", "User not found");
 			}
 
+			out.print(obj.toString());
+			
 			//STEP 6: Clean-up environment
 			stmt.close();
 			conn.close();
