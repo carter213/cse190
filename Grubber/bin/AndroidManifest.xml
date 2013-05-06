@@ -18,7 +18,7 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <!--
          The following two permissions are not required to use
-	     Google Maps Android API v2, but are recommended.
+	     Google Maps Android API v2, but are recommended.
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -30,7 +30,6 @@
     <uses-permission android:name="com.example.grubber.permission.MAPS_RECEIVE" />
 
     <application
-
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -72,17 +71,23 @@
         <activity
             android:name="com.example.grubber.SignupActivity"
             android:label="@string/title_activity_signup"
-             android:windowSoftInputMode="adjustResize|stateVisible"  >
+            android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
         <activity
             android:name="com.example.grubber.ProfileActivity"
             android:label="@string/title_activity_profile"
-             android:windowSoftInputMode="adjustResize|stateVisible"  >
+            android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
         <!-- Google Maps API -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyD_ATYYFuoEgx_tYLikKuV6FKpGbiztxpk" />
+
+        <activity
+            android:name="com.example.grubber.FoodPageActivity"
+            android:label="@string/title_activity_food_page" >
+        </activity>
     </application>
+
 
 </manifest>

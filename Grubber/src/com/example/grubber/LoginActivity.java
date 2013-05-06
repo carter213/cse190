@@ -246,11 +246,13 @@ public class LoginActivity extends Activity {
 			{
 				Log.d("bug", obj.get("message").toString());
 				
-				return obj.get("result").getAsBoolean();
+				if (obj.get("result").getAsBoolean())
+				{
+					UserInfoHelper user = UserInfoHelper.getInstance();
+					user.userLogin(obj.get("user_id").getAsInt());
+					return true;
+				}
 			}
-				//return true;
-
-			// TODO: register the new account here.
 			return false;
 		}
 

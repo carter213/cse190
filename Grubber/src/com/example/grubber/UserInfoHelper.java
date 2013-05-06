@@ -51,6 +51,11 @@ public class UserInfoHelper  {
 		this.is_signIn = true;
     }
 	
+	public void userLogin(int id){
+		this.m_userId = id;
+		this.is_signIn = true;
+	}
+	
 	public void setUserID(int userid){
 		this.m_userId = userid;
 	}
