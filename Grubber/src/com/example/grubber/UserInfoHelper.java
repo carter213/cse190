@@ -82,7 +82,7 @@ public class UserInfoHelper  {
 	public String getLastName(){
 		return this.m_lastName;
 	}
-	public Boolean getIsSignIn(){
+	public Boolean isSignIn(){
 		return this.is_signIn;
 	}
 	public int getUserID(){

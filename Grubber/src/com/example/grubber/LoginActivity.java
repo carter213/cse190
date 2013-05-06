@@ -13,6 +13,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -22,6 +23,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -34,11 +36,18 @@ import android.content.Intent;
  * well.
  */
 public class LoginActivity extends Activity {
+	
+	
+	
     public void goToRegister(View view) {
     	Intent intent = new Intent(this, SignupActivity.class);
     	startActivity(intent);	
     }
     
+    
+    
+    
+    public final Context context = this;
     
 	/**
 	 * A dummy authentication store containing known user names and passwords.
@@ -76,6 +85,7 @@ public class LoginActivity extends Activity {
 	            .build(); */
 
 		setContentView(R.layout.activity_login);
+		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); 
 
 		// Set up the login form.
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);

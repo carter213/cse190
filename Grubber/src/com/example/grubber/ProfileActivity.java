@@ -68,7 +68,7 @@ public class ProfileActivity extends Activity {
 		myVoteLV.setAdapter(arrayAdapter); 
 		
 			
-		if(!user.getIsSignIn()){
+		if(!user.isSignIn()){
 			//userIDTV.setText(GUESTMSG);
 			userNameET.setText(GUESTMSG);
 			lastNameET.setText(GUESTMSG);

@@ -16,6 +16,10 @@
     <string name="comment">Comment Here!</string>
     <string name="submit">Submit</string>
     <string name="sample_text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ut elit ipsum, ut suscipit purus. Vestibulum lobortis facilisis posuere. Ut mollis sapien at neque gravida nec fringilla mi sollicitudin. Fusce rhoncus, leo sed dapibus dignissim, lorem dui aliquam justo, quis volutpat sem elit sit amet ligula.   "</string>
+    <string name="signout">Sign Out</string>
+    <string name="user_profile">User Profile</string>
+    <string name="about">About </string>
+    <string name="logout_msg">Are you sure you want to log out?</string>
     
 
 </resources>
