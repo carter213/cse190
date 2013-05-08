@@ -60,6 +60,16 @@ public class findRestaurants extends HttpServlet {
 		String inzip = request.getParameter("zip");
 		String incity = request.getParameter("city");
 		String radius = request.getParameter("radius");
+		String min = request.getParameter("min");
+		String max = request.getParameter("max");
+		
+		if (min==null || max==null) {
+			JsonObject js = new JsonObject();
+			js.addProperty("result", false);
+			js.addProperty("message", "Missing parameter");
+			out.println(js.toString());
+			return;
+		}
 		
 		if (key == null)
 			key = "";
@@ -167,9 +177,23 @@ public class findRestaurants extends HttpServlet {
 			obj.addProperty("total", rest.size());
 			JsonArray jsarr = new JsonArray();
 
-			for(Restaurant r : rest)
+			int maxr = Integer.parseInt(max);
+			int minr = Integer.parseInt(min);
+			
+			// Check if getting this min -> max interval will go outside of index
+			if (minr >= rest.size()) {
+				obj.addProperty("result", false);
+				out.println(obj.toString());
+				return;
+			}
+			else if (maxr >= rest.size()) {
+				// If the max goes outside the array, just return up until the end of the array
+				maxr = rest.size()-1;
+			}
+			
+			for(int i = minr; i < maxr; i++)
 			{
-				jsarr.add(r.getJson());
+				jsarr.add(rest.get(i).getJson());
 			}
 			obj.add("result", jsarr);
 			out.println(obj.toString());

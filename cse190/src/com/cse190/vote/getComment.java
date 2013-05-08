@@ -1,4 +1,4 @@
-package com.cse190.food;
+package com.cse190.vote;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -7,7 +7,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,19 +17,19 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 /**
- * Servlet implementation class findFood
+ * Servlet implementation class getComment
  */
-public class findFood extends HttpServlet {
+public class getComment extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static String DB_URL = "jdbc:mysql://ec2-54-244-83-228.us-west-2.compute.amazonaws.com:3306/cse190";
 	//  Database credentials
 	static String USER = "cse190";
 	static String PASS = "yelp190";
-       
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public findFood() {
+    public getComment() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -39,36 +38,13 @@ public class findFood extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		PrintWriter out = response.getWriter();
-		int rest_id;
-		String alg = request.getParameter("alg");
-		String rest_id_result = request.getParameter("rest_id");
+		
+		String food_id = request.getParameter("food_id");
 		String min = request.getParameter("min");
 		String max = request.getParameter("max");
-		
-		JsonObject js = new JsonObject();
-		
-		if (rest_id_result == null || min == null || max == null)
-		{
-			js.addProperty("result", false);
-			js.addProperty("message", "Missing parameter");
-			out.println(js.toString());
-			return;
-		}
-		else {
-			rest_id = Integer.parseInt(rest_id_result);
-		}
-		
-		
-		String sql;
-		sql = "SELECT * FROM food WHERE rest_id = ?";
-		
-		//show best 3 food in the restaurant
-		if (alg != null)
-		{
-			sql += " ORDER BY vote DESC LIMIT ?, ?";
-		}	
-		
+
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try{
@@ -76,32 +52,46 @@ public class findFood extends HttpServlet {
 			   
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
-			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, rest_id);
-			stmt.setString(2, min);
-			stmt.setString(3, max);
-			ResultSet rs = stmt.executeQuery();
-				
-			JsonArray jsarr = new JsonArray();
 			
-			while (rs.next()) {
-				int food_id = rs.getInt("food_id");
-	            String name = rs.getString("name");
-	            String description = rs.getString("description");
-	            int vote = rs.getInt("vote");
-
-	            JsonObject obj = new JsonObject();
-	            obj.addProperty("food_id", food_id);
-	            obj.addProperty("name", name);
-	            obj.addProperty("vote", vote);
-	            obj.addProperty("description", description);
-	            	
-	            jsarr.add(obj);	            		            
-	        }
-
+			JsonObject js = new JsonObject();
+			// Allow either email or username to be submitted
+			String sql;
+			if (food_id == null || min == null || max == null) {  
+				js.addProperty("result", false);
+				js.addProperty("message", "Missing parameter");
+				out.println(js.toString());
+				return;
+			}
+			int maxr = Integer.parseInt(max);
+			int minr = Integer.parseInt(min);
+			maxr -= minr;
+			
+			sql = "SELECT v.comment, u.username, v.time FROM vote v, user u WHERE v.food_id = ? AND v.user_id=u.user_id ORDER BY v.time DESC LIMIT ?, ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, food_id);
+			stmt.setInt(2, minr);
+			stmt.setInt(3, maxr);
+			
+			ResultSet rs = stmt.executeQuery();	
+			JsonArray jsarr = new JsonArray();
+			if(rs.next())
+			{	
+				JsonObject obj = new JsonObject();
+				obj.addProperty("username", rs.getString("username"));
+				obj.addProperty("comment", rs.getString("comment"));
+				obj.addProperty("time", rs.getString("time"));
+				jsarr.add(obj);
+			}
+			else
+			{
+				js.addProperty("result", false);
+				js.addProperty("message", "No comments found");
+				out.println(js.toString());
+				return;
+			}
 			js.add("result", jsarr);
 			out.println(js.toString());
-
+			
 			//STEP 6: Clean-up environment
 			stmt.close();
 			conn.close();
@@ -124,7 +114,7 @@ public class findFood extends HttpServlet {
 			}catch(SQLException se){
 				se.printStackTrace();
 			}//end finally try
-		}//end try
+		}//end try		
 	}
 
 	/**

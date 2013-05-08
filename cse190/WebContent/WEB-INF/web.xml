@@ -109,4 +109,14 @@
     <servlet-name>createVote</servlet-name>
     <url-pattern>/createVote</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>getComment</display-name>
+    <servlet-name>getComment</servlet-name>
+    <servlet-class>com.cse190.vote.getComment</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>getComment</servlet-name>
+    <url-pattern>/getComment</url-pattern>
+  </servlet-mapping>
 </web-app>
