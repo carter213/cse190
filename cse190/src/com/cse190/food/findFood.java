@@ -43,11 +43,13 @@ public class findFood extends HttpServlet {
 		int rest_id;
 		String alg = request.getParameter("alg");
 		String rest_id_result = request.getParameter("rest_id");
-
+		JsonObject js = new JsonObject();
 		
 		if (rest_id_result == null)
 		{
-			out.println("Error, parameter missing");
+			js.addProperty("result", false);
+			js.addProperty("message", "Missing parameter");
+			out.println(js.toString());
 			return;
 		}
 		else {
@@ -89,11 +91,11 @@ public class findFood extends HttpServlet {
 	            obj.addProperty("vote", vote);
 	            obj.addProperty("description", description);
 	            	
-	            jsarr.add(obj);	            	
-	            
+	            jsarr.add(obj);	            		            
 	        }
 
-			out.println(jsarr.toString());
+			js.add("result", jsarr);
+			out.println(js.toString());
 
 			//STEP 6: Clean-up environment
 			stmt.close();

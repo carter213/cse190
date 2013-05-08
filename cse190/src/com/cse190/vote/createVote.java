@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.JsonObject;
+
 /**
  * Servlet implementation class createVote
  */
@@ -42,10 +44,13 @@ public class createVote extends HttpServlet {
 		String user_id = request.getParameter("user_id");
 		String rest_id = request.getParameter("rest_id");
 		String comment = request.getParameter("comment");
+		JsonObject js = new JsonObject();
 		
 		if( food_id == null || user_id == null)
 		{
-			out.println("Error, parameter missing");
+			js.addProperty("result", false);
+			js.addProperty("message", "Missing parameter");
+			out.println(js.toString());
 			return;
 		}
 	
@@ -74,7 +79,8 @@ public class createVote extends HttpServlet {
 				stmt.setString(2, food_id);
 				stmt.setString(3, comment);
 				stmt.executeUpdate();
-				out.println("Success");
+				js.addProperty("result", true);
+				out.println(js.toString());
 			}
 			else
 			{

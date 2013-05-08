@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.JsonObject;
+
 
 /**
  * Servlet implementation class createFood
@@ -41,10 +43,13 @@ public class createFood extends HttpServlet {
 		String name = request.getParameter("name");
 		String description = request.getParameter("description");
 		String rest_id_result = request.getParameter("rest_id");
+		JsonObject js = new JsonObject();
 		
 		if( name == null || rest_id_result == null)
 		{
-			out.println("Error, parameter missing");
+			js.addProperty("result", false);
+			js.addProperty("message", "Missing parameter");
+			out.println(js.toString());
 			return;
 		}
 		else {
@@ -78,11 +83,13 @@ public class createFood extends HttpServlet {
 				stmt.setString(3, description);
 				
 				stmt.executeUpdate();
-				out.println("Success");
+				js.addProperty("result", true);
 			}
 			else
 			{
-				out.println("Error, duplicate found");
+				js.addProperty("result", false);
+				js.addProperty("message", "Duplicate found");
+				out.println(js.toString());
 			}
 			
 
