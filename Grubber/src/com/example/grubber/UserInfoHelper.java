@@ -1,7 +1,5 @@
 package com.example.grubber;
 
-import android.app.Application;
-
 
 public class UserInfoHelper  {
 	private static UserInfoHelper instance;

@@ -18,6 +18,7 @@ import com.google.gson.JsonObject;
 
 /**
  * Servlet implementation class getComment
+ * This class is for getting details on one specific food
  */
 public class getComment extends HttpServlet {
 	private static final long serialVersionUID = 1L;
