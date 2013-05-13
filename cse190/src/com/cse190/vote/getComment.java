@@ -75,21 +75,17 @@ public class getComment extends HttpServlet {
 			
 			ResultSet rs = stmt.executeQuery();	
 			JsonArray jsarr = new JsonArray();
-			if(rs.next())
+			int start = 0;
+			while (rs.next() && start < maxr)
 			{	
 				JsonObject obj = new JsonObject();
 				obj.addProperty("username", rs.getString("username"));
 				obj.addProperty("comment", rs.getString("comment"));
 				obj.addProperty("time", rs.getString("time"));
 				jsarr.add(obj);
+				start++;
 			}
-			else
-			{
-				js.addProperty("result", false);
-				js.addProperty("message", "No comments found");
-				out.println(js.toString());
-				return;
-			}
+
 			js.add("result", jsarr);
 			out.println(js.toString());
 			
