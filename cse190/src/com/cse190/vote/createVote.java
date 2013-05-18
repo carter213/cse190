@@ -3,11 +3,13 @@ package com.cse190.vote;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
+import com.sun.jmx.snmp.Timestamp;
 
 /**
  * Servlet implementation class createVote
@@ -40,6 +43,7 @@ public class createVote extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
 		
+		//out.println(new Timestamp());
 		String food_id = request.getParameter("food_id");
 		String user_id = request.getParameter("user_id");
 		String rest_id = request.getParameter("rest_id");
@@ -73,24 +77,24 @@ public class createVote extends HttpServlet {
 			if(rs.getRow() == 0)
 			{
 				//If no vote exists from this user, add it with comment
-				sql = "INSERT INTO vote (user_id, food_id, comment) VALUES (?, ?, ?)";
+				sql = "INSERT INTO vote (user_id, food_id, comment, time) VALUES (?, ?, ?, NOW())";
 				stmt = conn.prepareStatement(sql);
 				stmt.setString(1, user_id);
 				stmt.setString(2, food_id);
 				stmt.setString(3, comment);
+				//stmt.setDate(4, new Date(System.currentTimeMillis()));
 				stmt.executeUpdate();
 				js.addProperty("result", true);
-				out.println(js.toString());
 			}
 			else
 			{
 				//Update the food_id and comment if their vote is going to be overwritten
-				sql = "UPDATE vote SET comment = ?, food_id = ? WHERE vote_id = ?";
+				sql = "UPDATE vote SET comment = ?, food_id = ? , time = NOW() WHERE vote_id = ?";
 				int prev_food_id = rs.getInt("food_id");
 				stmt = conn.prepareStatement(sql);
 				stmt.setString(1, comment);
 				stmt.setString(2, food_id);
-				stmt.setString(3, food_id);
+				stmt.setString(3, rs.getString("vote_id"));
 				stmt.executeUpdate();
 				
 				//Decrement prev food vote 
@@ -98,14 +102,16 @@ public class createVote extends HttpServlet {
 				stmt = conn.prepareStatement(sql);
 				stmt.setInt(1, prev_food_id);
 				stmt.executeUpdate();
-				out.println("Success");
+				js.addProperty("result", true);
 			}
 			
 			//Increment new food vote
 			sql = "UPDATE food SET vote=(vote+1) WHERE food_id = ?";
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, food_id);
-			stmt.executeUpdate();			
+			stmt.executeUpdate();
+			out.println(js.toString());
+
 
 			//STEP 6: Clean-up environment
 			stmt.close();
