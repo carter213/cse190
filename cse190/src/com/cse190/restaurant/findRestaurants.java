@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
 
@@ -28,6 +30,7 @@ public class findRestaurants extends HttpServlet {
 	//  Database credentials
 	static String USER = "cse190";
 	static String PASS = "yelp190";
+	//private static org.apache.log4j.Logger log = Logger.getLogger(findRestaurants.class);
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -76,6 +79,7 @@ public class findRestaurants extends HttpServlet {
 		
 		String sql = "SELECT * FROM restaurant WHERE";
 		//adding zip on the query
+		
 		if (inzip != null)
 		{
 			sql += " zip = ? AND";
@@ -106,6 +110,9 @@ public class findRestaurants extends HttpServlet {
 		try{
 			//STEP 2: Register JDBC driver
 			   
+			//logging
+			//log.debug("SQL connection establish");
+			
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
 			
@@ -169,20 +176,23 @@ public class findRestaurants extends HttpServlet {
 	            }
 	        }
 
+			//log.debug("Get all data");
+			
 			Collections.sort(rest, new Comparator<Restaurant>(){
 				public int compare(Restaurant r1, Restaurant r2) {
 					return r2.compare(r1);
 				}
 			});
+			//log.debug("Sort complete");
 			obj.addProperty("total", rest.size());
 			JsonArray jsarr = new JsonArray();
 
 			int maxr = Integer.parseInt(max);
 			int minr = Integer.parseInt(min);
-			
+			//log.debug("print data");
 			// Check if getting this min -> max interval will go outside of index
 			if (minr >= rest.size()) {
-				obj.addProperty("result", false);
+				obj.add("result", jsarr);
 				out.println(obj.toString());
 				return;
 			}
