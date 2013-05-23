@@ -119,4 +119,14 @@
     <servlet-name>getComment</servlet-name>
     <url-pattern>/getComment</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>topFood</display-name>
+    <servlet-name>topFood</servlet-name>
+    <servlet-class>com.cse190.food.topFood</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>topFood</servlet-name>
+    <url-pattern>/topFood</url-pattern>
+  </servlet-mapping>
 </web-app>
