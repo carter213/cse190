@@ -75,7 +75,7 @@ public class findRestaurants extends HttpServlet {
 		if (key == null)
 			key = "";
 		
-		String sql = "SELECT * FROM restaurant WHERE";
+		String sql = "SELECT *, (SELECT SUM(f.vote) FROM cse190.food f WHERE f.rest_id=r.rest_id) AS votes FROM cse190.restaurant r WHERE";
 		//adding zip on the query
 		
 		if (inzip != null)
@@ -161,16 +161,20 @@ public class findRestaurants extends HttpServlet {
 	            String city = rs.getString("city");
 	            String state = rs.getString("state");
 	            int zip = rs.getInt("zip");
+	            int votes;
+	            try {
+	            	votes = rs.getInt("votes");
+	            } catch (Exception e) { votes = 0; }
 
 	            if (inlatitude!=null && inlongitude!=null)
 	            {
 		            float distance = calcDistance(Double.parseDouble(inlatitude), Double.parseDouble(inlongitude), latitude, longitude);
 	            	if (distance <= rad) {
-		            	rest.add(new Restaurant(id, name, address, city, state, zip, phone, website, latitude, longitude, distance));
+		            	rest.add(new Restaurant(id, name, address, city, state, zip, phone, website, latitude, longitude, distance, votes));
 	            	}
 	            }
 	            else {
-	            	rest.add(new Restaurant(id, name, address, city, state, zip, phone, website, latitude, longitude, -1));
+	            	rest.add(new Restaurant(id, name, address, city, state, zip, phone, website, latitude, longitude, -1, votes));
 	            }
 	        }
 

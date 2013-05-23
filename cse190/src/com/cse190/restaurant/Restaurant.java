@@ -21,9 +21,10 @@ public class Restaurant {
 	private float distance;
 	private double latitude;
 	private double longitude;
+	private int votes;
 	
-	//from android
-	public Restaurant(int inid, String inname, String inaddress, String incity, String instate, int inzip, String inphone, String inwebsite, double inlongitude, double inlatitude, float indistance)
+	//from android, for findRestaurant
+	public Restaurant(int inid, String inname, String inaddress, String incity, String instate, int inzip, String inphone, String inwebsite, double inlongitude, double inlatitude, float indistance, int invotes)
 	{
 		rest_id = inid;
 		name = inname;
@@ -36,6 +37,7 @@ public class Restaurant {
 		latitude = inlatitude;
 		longitude = inlongitude;
 		distance = indistance;
+		votes = invotes;
 	}
 	
 	public Restaurant(String inname, String inaddress, String inphone, String inwebsite, String incity, String instate, String inzip)
@@ -109,7 +111,8 @@ public class Restaurant {
     	obj.addProperty("longitude", longitude);
     	obj.addProperty("phone", phone);
     	obj.addProperty("website", website);
-    	obj.addProperty("distance", distance);	
+    	obj.addProperty("distance", distance);
+    	obj.addProperty("votes", votes);
     	return obj;
 	}
 	
@@ -164,5 +167,10 @@ public class Restaurant {
 	public int getZip()
 	{
 		return zip;
+	}
+	
+	public int getVotes()
+	{
+		return votes;
 	}
 }
