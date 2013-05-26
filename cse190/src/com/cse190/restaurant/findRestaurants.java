@@ -131,17 +131,17 @@ public class findRestaurants extends HttpServlet {
 			
 			if (inlatitude != null)
 			{
-				stmt.setDouble(index, (Double.parseDouble(inlatitude) - 0.05));
+				stmt.setDouble(index, (Double.parseDouble(inlatitude) - 0.5));
 				index++;
-				stmt.setDouble(index, (Double.parseDouble(inlatitude) + 0.05));
+				stmt.setDouble(index, (Double.parseDouble(inlatitude) + 0.5));
 				index++;
 			}
 			
 			if (inlongitude != null)
 			{
-				stmt.setDouble(index, (Double.parseDouble(inlongitude) - 0.05));
+				stmt.setDouble(index, (Double.parseDouble(inlongitude) - 0.5));
 				index++;
-				stmt.setDouble(index, (Double.parseDouble(inlongitude) + 0.05));
+				stmt.setDouble(index, (Double.parseDouble(inlongitude) + 0.5));
 				index++;
 			}			
 			stmt.setString(index, "%"+key+"%");
@@ -203,7 +203,7 @@ public class findRestaurants extends HttpServlet {
 				maxr = rest.size()-1;
 			}
 			
-			for(int i = minr; i < maxr; i++)
+			for(int i = minr; i <= maxr; i++)
 			{
 				jsarr.add(rest.get(i).getJson());
 			}
