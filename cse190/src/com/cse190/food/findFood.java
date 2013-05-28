@@ -75,7 +75,7 @@ public class findFood extends HttpServlet {
 				stmt = conn.prepareStatement(sql);
 				stmt.setInt(1, rest_id);
 				stmt.setInt(2, Integer.parseInt(min));
-				stmt.setInt(3, Integer.parseInt(max) - Integer.parseInt(min));
+				stmt.setInt(3, Integer.parseInt(max) - Integer.parseInt(min) + 1);
 			}	
 			else
 			{
