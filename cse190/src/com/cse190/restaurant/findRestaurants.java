@@ -72,6 +72,8 @@ public class findRestaurants extends HttpServlet {
 			return;
 		}
 		
+		float searchSize = 0.5f;
+		
 		if (key == null)
 			key = "";
 		
@@ -101,6 +103,7 @@ public class findRestaurants extends HttpServlet {
 		if (radius != null)
 		{
 			rad = Float.parseFloat("radius");
+			searchSize = rad * 0.05f;
 		}
 		
 		Connection conn = null;
@@ -131,17 +134,17 @@ public class findRestaurants extends HttpServlet {
 			
 			if (inlatitude != null)
 			{
-				stmt.setDouble(index, (Double.parseDouble(inlatitude) - 0.5));
+				stmt.setDouble(index, (Double.parseDouble(inlatitude) - searchSize));
 				index++;
-				stmt.setDouble(index, (Double.parseDouble(inlatitude) + 0.5));
+				stmt.setDouble(index, (Double.parseDouble(inlatitude) + searchSize));
 				index++;
 			}
 			
 			if (inlongitude != null)
 			{
-				stmt.setDouble(index, (Double.parseDouble(inlongitude) - 0.5));
+				stmt.setDouble(index, (Double.parseDouble(inlongitude) - searchSize));
 				index++;
-				stmt.setDouble(index, (Double.parseDouble(inlongitude) + 0.5));
+				stmt.setDouble(index, (Double.parseDouble(inlongitude) + searchSize));
 				index++;
 			}			
 			stmt.setString(index, "%"+key+"%");
