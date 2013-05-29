@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -76,15 +77,27 @@ public class createFood extends HttpServlet {
 			rs.next();
 			if(rs.getRow() == 0)
 			{
+				//int id = 0;
 				sql = "INSERT INTO food (rest_id, name, description, vote) VALUES (?, ?, ?, 0)";
-				stmt = conn.prepareStatement(sql);
+				stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				stmt.setInt(1, rest_id);
 				stmt.setString(2, name);
 				stmt.setString(3, description);
 				stmt.executeUpdate();
-				js.addProperty("result", true);
-				js.addProperty("message", "Food has been added");
 
+				ResultSet rs1 = stmt.getGeneratedKeys();
+				rs1.next();
+				if (rs1.getRow() != 0)
+				{
+					js.addProperty("result", true);
+					js.addProperty("message", "Food has been added");
+					js.addProperty("food_id", rs1.getInt(1));
+				}
+				else
+				{
+					js.addProperty("result", false);
+					js.addProperty("message", "Not found");
+				}
 			}
 			else
 			{
