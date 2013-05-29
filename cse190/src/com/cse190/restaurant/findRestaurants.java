@@ -102,7 +102,7 @@ public class findRestaurants extends HttpServlet {
 		float rad = 1;
 		if (radius != null)
 		{
-			rad = Float.parseFloat("radius");
+			rad = Float.parseFloat(radius);
 			searchSize = rad * 0.05f;
 		}
 		
