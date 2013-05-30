@@ -43,7 +43,7 @@ public class topFood extends HttpServlet {
 		JsonObject js = new JsonObject();
 		
 		String sql;
-		sql = "SELECT f.food_id AS food_id, f.name AS food_name, f.vote, r.name AS rest_name, (SELECT COUNT(*) from cse190.vote v WHERE v.comment!=\"\" AND v.food_id=f.food_id) as comments FROM cse190.food f, cse190.restaurant r WHERE f.rest_id=r.rest_id ORDER BY f.vote DESC LIMIT 10;";
+		sql = "SELECT f.food_id AS food_id, f.name AS food_name, f.vote, r.name AS rest_name, (SELECT COUNT(*) from cse190.vote v WHERE v.comment!=\"\" AND v.food_id=f.food_id) as comments FROM cse190.food f, cse190.restaurant r WHERE f.rest_id=r.rest_id ORDER BY f.vote DESC LIMIT 5;";
 		
 		Statement stmt = null;
 		Connection conn = null;
