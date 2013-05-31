@@ -1,5 +1,7 @@
 package com.cse190.food;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -15,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
-
+import org.apache.commons.codec.binary.Base64;
 
 /**
  * Servlet implementation class createFood
@@ -39,14 +41,23 @@ public class createFood extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
 		int rest_id;
 		String name = request.getParameter("name");
 		String description = request.getParameter("description");
 		String rest_id_result = request.getParameter("rest_id");
+		byte [] image;
+		String imagein = request.getParameter("image");
 		JsonObject js = new JsonObject();
 		
-		if( name == null || rest_id_result == null)
+		if( name == null || rest_id_result == null || imagein == null)
 		{
 			js.addProperty("result", false);
 			js.addProperty("message", "Missing parameter");
@@ -55,6 +66,9 @@ public class createFood extends HttpServlet {
 		}
 		else {
 			rest_id = Integer.parseInt(rest_id_result);
+			//decode Base64
+			image = Base64.decodeBase64(imagein);
+
 		}
 		
 		if (description == null)
@@ -89,9 +103,21 @@ public class createFood extends HttpServlet {
 				rs1.next();
 				if (rs1.getRow() != 0)
 				{
+					//write the pics to server
+					try{
+					File file = new File("/var/www/lighttpd/picture/" + rs1.getInt(1) + ".jpg");
+					FileOutputStream fw = new FileOutputStream(file);
+					fw.write(image, 0, image.length);
+					fw.close();
+					}
+					catch (Exception e)
+					{
+						out.println("Failed");
+						return;
+					}
+					//json
 					js.addProperty("result", true);
 					js.addProperty("message", "Food has been added");
-					js.addProperty("food_id", rs1.getInt(1));
 				}
 				else
 				{
@@ -129,14 +155,6 @@ public class createFood extends HttpServlet {
 				se.printStackTrace();
 			}//end finally try
 		}//end try
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }
