@@ -24,7 +24,7 @@ public class Restaurant {
 	private int votes;
 	
 	//from android, for findRestaurant
-	public Restaurant(int inid, String inname, String inaddress, String incity, String instate, int inzip, String inphone, String inwebsite, double inlongitude, double inlatitude, float indistance, int invotes)
+	public Restaurant(int inid, String inname, String inaddress, String incity, String instate, int inzip, String inphone, String inwebsite, double inlatitude, double inlongitude, float indistance, int invotes)
 	{
 		rest_id = inid;
 		name = inname;
