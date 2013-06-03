@@ -129,4 +129,14 @@
     <servlet-name>topFood</servlet-name>
     <url-pattern>/topFood</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>topRestaurant</display-name>
+    <servlet-name>topRestaurant</servlet-name>
+    <servlet-class>com.cse190.restaurant.topRestaurant</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>topRestaurant</servlet-name>
+    <url-pattern>/topRestaurant</url-pattern>
+  </servlet-mapping>
 </web-app>
