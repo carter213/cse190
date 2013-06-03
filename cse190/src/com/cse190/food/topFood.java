@@ -43,7 +43,7 @@ public class topFood extends HttpServlet {
 		JsonObject js = new JsonObject();
 		
 		String sql;
-		sql = "SELECT f.food_id AS food_id, f.name AS food_name, f.vote, r.name AS rest_name, (SELECT COUNT(*) from cse190.vote v WHERE v.comment!=\"\" AND v.food_id=f.food_id) as comments FROM cse190.food f, cse190.restaurant r WHERE f.rest_id=r.rest_id ORDER BY f.vote DESC LIMIT 5;";
+		sql = "SELECT f.description AS food_description, f.food_id AS food_id, f.name AS food_name, f.vote, r.name AS rest_name, r.rest_id AS rest_id, (SELECT COUNT(*) from cse190.vote v WHERE v.comment!=\"\" AND v.food_id=f.food_id) as comments FROM cse190.food f, cse190.restaurant r WHERE f.rest_id=r.rest_id ORDER BY f.vote DESC LIMIT 5;";
 		
 		Statement stmt = null;
 		Connection conn = null;
@@ -62,11 +62,15 @@ public class topFood extends HttpServlet {
 	            String rest_name = rs.getString("rest_name");
 	            int comments = rs.getInt("comments");
 	            int food_id = rs.getInt("food_id");
+	            int rest_id = rs.getInt("rest_id");
+	            String food_description = rs.getString("food_description");
 
 	            JsonObject obj = new JsonObject();
 	            obj.addProperty("food_name", food_name);
 	            obj.addProperty("food_id", food_id);
+	            obj.addProperty("food_description", food_description);
 	            obj.addProperty("rest_name", rest_name);
+	            obj.addProperty("rest_id", rest_id);
 	            obj.addProperty("vote", vote);
 	            obj.addProperty("comments", comments);
 	            	
