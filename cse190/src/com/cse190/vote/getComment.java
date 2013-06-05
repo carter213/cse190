@@ -78,25 +78,22 @@ public class getComment extends HttpServlet {
 
 			int maxr = Integer.parseInt(max);
 			int minr = Integer.parseInt(min);
-			maxr -= minr;
 			
 			sql = "SELECT v.comment, u.username, v.time FROM vote v, user u WHERE v.food_id = ? AND v.user_id=u.user_id ORDER BY v.time DESC LIMIT ?, ?";
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, food_id);
 			stmt.setInt(2, minr);
-			stmt.setInt(3, maxr);
+			stmt.setInt(3, maxr - minr + 1);
 			
 			ResultSet rs = stmt.executeQuery();	
 			JsonArray jsarr = new JsonArray();
-			int start = 0;
-			while (rs.next() && start < maxr)
+			while (rs.next())
 			{	
 				JsonObject obj = new JsonObject();
 				obj.addProperty("username", rs.getString("username"));
 				obj.addProperty("comment", rs.getString("comment"));
 				obj.addProperty("time", rs.getString("time"));
 				jsarr.add(obj);
-				start++;
 			}
 
 			js.add("result", jsarr);
