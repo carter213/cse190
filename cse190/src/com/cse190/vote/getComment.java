@@ -45,6 +45,15 @@ public class getComment extends HttpServlet {
 		String food_id = request.getParameter("food_id");
 		String min = request.getParameter("min");
 		String max = request.getParameter("max");
+		
+		JsonObject js = new JsonObject();
+
+		if (food_id == null || min == null || max == null) {  
+			js.addProperty("result", false);
+			js.addProperty("message", "Missing parameter");
+			out.println(js.toString());
+			return;
+		}
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -54,15 +63,19 @@ public class getComment extends HttpServlet {
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
 			
-			JsonObject js = new JsonObject();
 			// Allow either email or username to be submitted
 			String sql;
-			if (food_id == null || min == null || max == null) {  
-				js.addProperty("result", false);
-				js.addProperty("message", "Missing parameter");
-				out.println(js.toString());
-				return;
+			sql = "SELECT COUNT(*) AS total FROM vote WHERE food_id = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, food_id);
+			
+			ResultSet rs1 = stmt.executeQuery();
+			
+			if(rs1.next())
+			{
+				js.addProperty("total", rs1.getString("total"));
 			}
+
 			int maxr = Integer.parseInt(max);
 			int minr = Integer.parseInt(min);
 			maxr -= minr;

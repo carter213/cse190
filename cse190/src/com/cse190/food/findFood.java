@@ -59,15 +59,27 @@ public class findFood extends HttpServlet {
 			rest_id = Integer.parseInt(rest_id_result);
 		}
 		
-		String sql;
-		sql = "SELECT * FROM food WHERE rest_id = ?";
-		
 		PreparedStatement stmt = null;
 		Connection conn = null;
 		try{
 			
+			String sql;
+			sql = "SELECT COUNT(*) AS total FROM food WHERE rest_id = ?";
+			
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, rest_id);
+			ResultSet rs1 = stmt.executeQuery();
+			
+			if(rs1.next())
+			{
+				js.addProperty("total", rs1.getInt("total"));
+			}
+			
+			
+			
+			sql = "SELECT * FROM food WHERE rest_id = ?";
 			//show best 3 food in the restaurant
 			if (min != null && max != null)
 			{

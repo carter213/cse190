@@ -73,8 +73,8 @@ public class createVote extends HttpServlet {
 			stmt.setString(1, user_id);
 			stmt.setString(2, rest_id);
 			ResultSet rs = stmt.executeQuery();
-			rs.next();
-			if(rs.getRow() == 0)
+			
+			if(!rs.next())
 			{
 				//If no vote exists from this user, add it with comment
 				sql = "INSERT INTO vote (user_id, food_id, comment, time) VALUES (?, ?, ?, NOW())";
@@ -82,7 +82,6 @@ public class createVote extends HttpServlet {
 				stmt.setString(1, user_id);
 				stmt.setString(2, food_id);
 				stmt.setString(3, comment);
-				//stmt.setDate(4, new Date(System.currentTimeMillis()));
 				stmt.executeUpdate();
 				js.addProperty("result", true);
 			}
