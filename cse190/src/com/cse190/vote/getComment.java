@@ -79,7 +79,7 @@ public class getComment extends HttpServlet {
 			int maxr = Integer.parseInt(max);
 			int minr = Integer.parseInt(min);
 			
-			sql = "SELECT v.comment, u.username, v.time FROM vote v, user u WHERE v.food_id = ? AND v.user_id=u.user_id ORDER BY v.time DESC LIMIT ?, ?";
+			sql = "SELECT v.comment, u.username, v.time FROM vote v, user u WHERE v.comment!=\"\" AND v.food_id = ? AND v.user_id=u.user_id ORDER BY v.time DESC LIMIT ?, ?";
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, food_id);
 			stmt.setInt(2, minr);
