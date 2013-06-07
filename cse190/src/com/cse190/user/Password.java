@@ -5,6 +5,9 @@ import javax.crypto.spec.PBEKeySpec;
 import java.security.SecureRandom;
 import org.apache.commons.codec.binary.Base64;
 
+/*
+ * This class is used to create, salt & hash passwords
+ */
 public class Password {
 	//Solution taken from http://stackoverflow.com/a/11038230
 	

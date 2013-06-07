@@ -21,13 +21,14 @@ import com.sun.jmx.snmp.Timestamp;
 
 /**
  * Servlet implementation class createVote
+ * Adds a vote to the database or updates the currently existing vote/comment
  */
 public class createVote extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static String DB_URL = "jdbc:mysql://ec2-54-244-83-228.us-west-2.compute.amazonaws.com:3306/cse190";
 	//  Database credentials
-	static String USER = "cse190";
-	static String PASS = "yelp190";
+	static String USER = "";
+	static String PASS = "";
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -43,11 +44,10 @@ public class createVote extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
 		
-		//out.println(new Timestamp());
-		String food_id = request.getParameter("food_id");
-		String user_id = request.getParameter("user_id");
-		String rest_id = request.getParameter("rest_id");
-		String comment = request.getParameter("comment");
+		String food_id = request.getParameter("food_id");	//Food ID
+		String user_id = request.getParameter("user_id");	//User ID
+		String rest_id = request.getParameter("rest_id");	//Rest ID
+		String comment = request.getParameter("comment");	//Comment
 		JsonObject js = new JsonObject();
 		
 		if( food_id == null || user_id == null)

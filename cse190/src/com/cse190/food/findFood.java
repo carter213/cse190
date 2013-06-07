@@ -19,13 +19,14 @@ import com.google.gson.JsonObject;
 
 /**
  * Servlet implementation class findFood
+ * Returns food from the database for a certain restaurant and min-max interval
  */
 public class findFood extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static String DB_URL = "jdbc:mysql://ec2-54-244-83-228.us-west-2.compute.amazonaws.com:3306/cse190";
 	//  Database credentials
-	static String USER = "cse190";
-	static String PASS = "yelp190";
+	static String USER = "";
+	static String PASS = "";
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -36,15 +37,14 @@ public class findFood extends HttpServlet {
     }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * Queries the database to get the foods from rest_id that are within the specified interval
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
 		int rest_id;
-		//String alg = request.getParameter("alg");
-		String rest_id_result = request.getParameter("rest_id");
-		String min = request.getParameter("min");
-		String max = request.getParameter("max");
+		String rest_id_result = request.getParameter("rest_id"); //Restaurant ID
+		String min = request.getParameter("min");				 //Minimum result #
+		String max = request.getParameter("max");				 //Maximum result #
 		
 		JsonObject js = new JsonObject();
 		
@@ -62,9 +62,7 @@ public class findFood extends HttpServlet {
 		PreparedStatement stmt = null;
 		Connection conn = null;
 		try{
-			
-			String sql;
-			sql = "SELECT COUNT(*) AS total FROM food WHERE rest_id = ?";
+			String sql = "SELECT COUNT(*) AS total FROM food WHERE rest_id = ?";
 			
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
@@ -76,8 +74,6 @@ public class findFood extends HttpServlet {
 			{
 				js.addProperty("total", rs1.getInt("total"));
 			}
-			
-			
 			
 			sql = "SELECT * FROM food WHERE rest_id = ?";
 			//show best 3 food in the restaurant

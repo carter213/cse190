@@ -18,14 +18,15 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 /**
- * Servlet implementation class topFood
+ * Servlet implementation class trendingFood
+ * Returns the 5 most recently voted on foods from the database
  */
 public class trendingFood extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static String DB_URL = "jdbc:mysql://ec2-54-244-83-228.us-west-2.compute.amazonaws.com:3306/cse190";
 	//  Database credentials
-	static String USER = "cse190";
-	static String PASS = "yelp190";
+	static String USER = "";
+	static String PASS = "";
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -35,7 +36,7 @@ public class trendingFood extends HttpServlet {
     }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * Queries DB for 5 most recently voted on foods (unique) and writes the JSON output
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();

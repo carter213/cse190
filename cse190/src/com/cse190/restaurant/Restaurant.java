@@ -9,6 +9,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+/*
+ * This class is used to construct restaurant information to help servlets output information about them.
+ */
 public class Restaurant {
 	private int rest_id;
 	private String name;

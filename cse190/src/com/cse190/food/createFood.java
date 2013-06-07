@@ -21,13 +21,14 @@ import org.apache.commons.codec.binary.Base64;
 
 /**
  * Servlet implementation class createFood
+ * This class is used to add foods from users to the database.
  */
 public class createFood extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static String DB_URL = "jdbc:mysql://ec2-54-244-83-228.us-west-2.compute.amazonaws.com:3306/cse190";
 	//  Database credentials
-	static String USER = "cse190";
-	static String PASS = "yelp190";
+	static String USER = "";
+	static String PASS = "";
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -45,16 +46,18 @@ public class createFood extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * Handle post of new food and add it to the database.
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
+		//Restaurant ID
 		int rest_id;
-		String name = request.getParameter("name");
-		String description = request.getParameter("description");
-		String rest_id_result = request.getParameter("rest_id");
-		byte [] image;
-		String imagein = request.getParameter("image");
+		
+		String name = request.getParameter("name"); 				//Food name
+		String description = request.getParameter("description");	//Restaurant description
+		String rest_id_result = request.getParameter("rest_id");	//Restaurant ID
+		byte [] image;												
+		String imagein = request.getParameter("image");				//Food Image
 		JsonObject js = new JsonObject();
 		
 		if( name == null || rest_id_result == null || imagein == null)

@@ -17,13 +17,14 @@ import com.google.gson.JsonObject;
 
 /**
  * Servlet implementation class login
+ * Validate username / password combination and output true or false
  */
 public class login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static String DB_URL = "jdbc:mysql://ec2-54-244-83-228.us-west-2.compute.amazonaws.com:3306/cse190";
 	//  Database credentials
-	static String USER = "cse190";
-	static String PASS = "yelp190";
+	static String USER = "";
+	static String PASS = "";
 	
     /**
      * @see HttpServlet#HttpServlet()

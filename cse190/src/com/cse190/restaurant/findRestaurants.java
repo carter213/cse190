@@ -21,13 +21,14 @@ import com.google.gson.JsonArray;
 
 /**
  * Servlet implementation class findRestaurants
+ * Finds the restaurants closest to the user and in the interval min and max
  */
 public class findRestaurants extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static String DB_URL = "jdbc:mysql://ec2-54-244-83-228.us-west-2.compute.amazonaws.com:3306/cse190";
 	//  Database credentials
-	static String USER = "cse190";
-	static String PASS = "yelp190";
+	static String USER = "";
+	static String PASS = "";
 	//private static org.apache.log4j.Logger log = Logger.getLogger(findRestaurants.class);
 	
     /**
@@ -50,7 +51,7 @@ public class findRestaurants extends HttpServlet {
     }
     
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * Queries DB for restaurants inside the interval that are closest to the user
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
@@ -80,6 +81,7 @@ public class findRestaurants extends HttpServlet {
 		String sql = "SELECT *, (SELECT SUM(f.vote) FROM cse190.food f WHERE f.rest_id=r.rest_id) AS votes FROM cse190.restaurant r WHERE";
 		//adding zip on the query
 		
+		/* Construct the SQL query */
 		if (inzip != null)
 		{
 			sql += " zip = ? AND";

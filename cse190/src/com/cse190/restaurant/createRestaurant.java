@@ -17,13 +17,14 @@ import com.google.gson.JsonObject;
 
 /**
  * Servlet implementation class createRestaurant
+ * Handles adding restaurants to the database from the user
  */
 public class createRestaurant extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static String DB_URL = "jdbc:mysql://ec2-54-244-83-228.us-west-2.compute.amazonaws.com:3306/cse190";
 	//  Database credentials
-	static String USER = "cse190";
-	static String PASS = "yelp190";
+	static String USER = "";
+	static String PASS = "";
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -39,10 +40,10 @@ public class createRestaurant extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
 		
-		String name = request.getParameter("name");
-		String address = request.getParameter("address");
-		String phone = request.getParameter("phone");
-		String website = request.getParameter("website");
+		String name = request.getParameter("name");			//Restaurant name
+		String address = request.getParameter("address");	//Restaurant Address
+		String phone = request.getParameter("phone");		//Restaurant Phone #
+		String website = request.getParameter("website");	//Restaurant Website
 		
 		//find location
 		String city = request.getParameter("city");
@@ -73,6 +74,7 @@ public class createRestaurant extends HttpServlet {
 			rs.next();
 			if(rs.getRow() == 0)
 			{
+				//Website is not required
 				if (website != null) {
 					sql = "INSERT INTO restaurant (name, address, city, state, zip, latitude, longitude, phone, website) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 					stmt = conn.prepareStatement(sql);
